@@ -1,0 +1,1702 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>APA Quest — Normas APA 7.ª ed.</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#0F1B2D; --surface:#162236; --card:#1E2F45;
+  --gold:#F5C842; --teal:#3ECFB2; --red:#E05C5C;
+  --text:#F0EDE6; --muted:#8A9BB5; --border:#2A3F5C;
+  --radius:12px;
+  --font-d:'Space Grotesk',sans-serif;
+  --font-b:'Inter',sans-serif;
+  --font-m:'JetBrains Mono',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:var(--font-b);min-height:100vh;display:flex;flex-direction:column;align-items:center;}
+
+/* HEADER */
+header{width:100%;background:var(--surface);border-bottom:2px solid var(--gold);padding:14px 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+.logo{font-family:var(--font-d);font-size:1.3rem;font-weight:700;}.logo span{color:var(--gold);}
+.hdr-right{display:flex;gap:20px;align-items:center;}
+.score-chip{font-family:var(--font-d);font-size:1rem;font-weight:700;color:var(--gold);}
+.score-chip small{font-size:0.7rem;color:var(--muted);font-weight:400;margin-left:4px;}
+
+/* PROGRESS */
+.prog-wrap{width:100%;background:var(--surface);padding:8px 28px 12px;border-bottom:1px solid var(--border);}
+.prog-labels{display:flex;justify-content:space-between;font-size:0.7rem;color:var(--muted);margin-bottom:5px;}
+.prog-labels .active{color:var(--teal);font-weight:600;}
+.prog-track{height:5px;background:var(--border);border-radius:99px;overflow:hidden;}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--teal),var(--gold));border-radius:99px;transition:width .5s ease;}
+
+/* MAIN */
+main{width:100%;max-width:840px;padding:32px 20px 80px;flex:1;}
+.screen{display:none;}.screen.active{display:block;}
+
+/* LESSON PAGES */
+.lesson-page{display:none;}.lesson-page.active{display:block;}
+.lesson-nav{display:flex;align-items:center;justify-content:space-between;margin-top:28px;padding-top:20px;border-top:1px solid var(--border);}
+.lesson-counter{font-family:var(--font-m);font-size:0.75rem;color:var(--muted);}
+
+/* TYPOGRAPHY */
+.eyebrow{font-family:var(--font-m);font-size:0.72rem;color:var(--teal);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px;}
+h1{font-family:var(--font-d);font-size:2.2rem;font-weight:700;line-height:1.2;margin-bottom:12px;}
+h2{font-family:var(--font-d);font-size:1.6rem;font-weight:700;margin-bottom:10px;}
+h3{font-family:var(--font-d);font-size:1.15rem;font-weight:600;margin-bottom:8px;}
+.lead{font-size:1.05rem;color:var(--muted);line-height:1.75;margin-bottom:20px;}
+p{line-height:1.75;margin-bottom:14px;color:var(--text);}
+p:last-child{margin-bottom:0;}
+
+/* CARDS */
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:22px;margin-bottom:16px;}
+.card-teal{border-left:3px solid var(--teal);}
+.card-gold{border-left:3px solid var(--gold);}
+.card-red{border-left:3px solid var(--red);}
+
+/* INFO BOXES */
+.info-box{background:rgba(62,207,178,.08);border:1px solid rgba(62,207,178,.25);border-radius:10px;padding:16px 18px;margin:16px 0;}
+.info-box .ib-label{font-family:var(--font-m);font-size:0.7rem;color:var(--teal);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;}
+.warn-box{background:rgba(245,200,66,.08);border:1px solid rgba(245,200,66,.25);border-radius:10px;padding:16px 18px;margin:16px 0;}
+.warn-box .wb-label{font-family:var(--font-m);font-size:0.7rem;color:var(--gold);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;}
+
+/* REFERENCE DISPLAY */
+.ref-block{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px 18px;font-family:var(--font-m);font-size:0.82rem;line-height:1.8;margin:12px 0;word-break:break-word;}
+.ref-block em{font-style:italic;color:var(--teal);}
+.ref-anatomy{display:flex;flex-wrap:wrap;gap:6px;margin:14px 0;}
+.ref-part{padding:5px 12px;border-radius:6px;font-size:0.78rem;font-family:var(--font-m);}
+.rp-author{background:rgba(245,200,66,.15);color:var(--gold);border:1px solid rgba(245,200,66,.3);}
+.rp-year{background:rgba(62,207,178,.15);color:var(--teal);border:1px solid rgba(62,207,178,.3);}
+.rp-title{background:rgba(240,237,230,.1);color:var(--text);border:1px solid var(--border);}
+.rp-source{background:rgba(224,92,92,.15);color:var(--red);border:1px solid rgba(224,92,92,.3);}
+
+/* ARTICLE ANATOMY VISUAL */
+.art-sections{display:flex;flex-direction:column;gap:8px;margin:16px 0;}
+.art-sec{display:grid;grid-template-columns:140px 1fr;gap:12px;align-items:start;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:12px 16px;}
+.art-sec .sec-name{font-family:var(--font-d);font-size:0.85rem;font-weight:600;color:var(--gold);}
+.art-sec .sec-tip{font-size:0.82rem;color:var(--muted);line-height:1.5;}
+.art-sec .sec-tip strong{color:var(--text);display:block;margin-bottom:2px;}
+
+/* COMPARE TABLE */
+.cmp-table{width:100%;border-collapse:collapse;font-size:0.85rem;margin:16px 0;}
+.cmp-table th{background:var(--surface);padding:10px 14px;text-align:left;font-family:var(--font-d);font-size:0.8rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;border-bottom:1px solid var(--border);}
+.cmp-table td{padding:10px 14px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.5;}
+.cmp-table tr:last-child td{border-bottom:none;}
+.cmp-table .td-label{font-family:var(--font-m);font-size:0.78rem;color:var(--teal);}
+
+/* BUTTONS */
+.btn{display:inline-block;cursor:pointer;border:none;border-radius:8px;font-family:var(--font-d);font-weight:600;font-size:0.95rem;padding:12px 28px;transition:all .2s;text-decoration:none;}
+.btn-gold{background:var(--gold);color:#0F1B2D;}
+.btn-gold:hover{background:#f0bc1f;transform:translateY(-1px);box-shadow:0 5px 18px rgba(245,200,66,.3);}
+.btn-teal{background:var(--teal);color:#0F1B2D;}
+.btn-teal:hover{background:#30bfa3;transform:translateY(-1px);}
+.btn-ghost{background:transparent;color:var(--text);border:1px solid var(--border);}
+.btn-ghost:hover{border-color:var(--teal);color:var(--teal);}
+.btn-sm{padding:8px 16px;font-size:0.82rem;}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none!important;}
+.flex-c{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;}
+.flex-b{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;}
+.mt8{margin-top:8px;}.mt16{margin-top:16px;}.mt24{margin-top:24px;}.mt32{margin-top:32px;}
+
+/* INTRO */
+.badge{display:inline-block;background:var(--gold);color:#0F1B2D;font-family:var(--font-d);font-size:0.72rem;font-weight:700;padding:3px 12px;border-radius:99px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:16px;}
+.level-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:28px 0;}
+.lc{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:18px 14px;}
+.lc .lc-num{font-family:var(--font-m);font-size:0.7rem;color:var(--teal);margin-bottom:6px;}
+.lc h3{font-size:0.95rem;margin-bottom:5px;}
+.lc p{font-size:0.78rem;color:var(--muted);line-height:1.5;margin-bottom:10px;}
+.lc .mech{font-size:0.68rem;font-weight:600;color:var(--gold);background:rgba(245,200,66,.1);padding:3px 9px;border-radius:99px;}
+
+/* DRAG & DROP */
+.dnd-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:16px;}
+.drop-list{display:flex;flex-direction:column;gap:8px;}
+.drop-zone{min-height:50px;border:2px dashed var(--border);border-radius:8px;padding:9px 12px;display:flex;align-items:center;gap:8px;transition:all .2s;}
+.drop-zone.over{border-color:var(--teal);background:rgba(62,207,178,.07);}
+.drop-zone.correct{border-color:var(--teal);border-style:solid;background:rgba(62,207,178,.08);}
+.drop-zone.incorrect{border-color:var(--red);border-style:solid;background:rgba(224,92,92,.08);}
+.dz-label{font-size:0.7rem;color:var(--muted);font-family:var(--font-m);min-width:130px;line-height:1.3;}
+.placed-chip{background:var(--teal);color:#0F1B2D;padding:4px 11px;border-radius:6px;font-size:0.8rem;font-weight:600;cursor:grab;}
+.drag-pool{display:flex;flex-wrap:wrap;gap:8px;}
+.drag-tag{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:7px 14px;cursor:grab;font-size:0.82rem;font-weight:500;user-select:none;transition:all .15s;}
+.drag-tag:hover{border-color:var(--gold);color:var(--gold);}
+.drag-tag.used{opacity:.25;pointer-events:none;}
+
+/* QUIZ */
+.q-dots{display:flex;gap:5px;margin-bottom:18px;}
+.q-dot{width:24px;height:5px;border-radius:99px;background:var(--border);transition:background .3s;}
+.q-dot.done{background:var(--teal);}.q-dot.active{background:var(--gold);}
+.q-step{font-family:var(--font-m);font-size:0.7rem;color:var(--gold);background:rgba(245,200,66,.1);padding:3px 10px;border-radius:99px;margin-bottom:12px;display:inline-block;}
+.q-text{font-family:var(--font-d);font-size:1.05rem;font-weight:600;line-height:1.5;margin-bottom:14px;}
+.q-opts{display:flex;flex-direction:column;gap:9px;}
+.q-opt{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:12px 16px;cursor:pointer;font-size:0.88rem;color:var(--text);line-height:1.5;transition:all .15s;text-align:left;width:100%;}
+.q-opt:hover:not(:disabled){border-color:var(--gold);color:var(--gold);}
+.q-opt.correct{border-color:var(--teal);background:rgba(62,207,178,.1);color:var(--text);}
+.q-opt.incorrect{border-color:var(--red);background:rgba(224,92,92,.1);color:var(--text);}
+.q-opt:disabled{cursor:default;}
+
+/* FEEDBACK */
+.fb{border-radius:8px;padding:14px 16px;font-size:0.86rem;line-height:1.65;display:none;margin-top:14px;}
+.fb.show{display:block;}
+.fb.ok{background:rgba(62,207,178,.1);border-left:3px solid var(--teal);}
+.fb.fail{background:rgba(224,92,92,.1);border-left:3px solid var(--red);}
+.fb strong{display:block;margin-bottom:4px;}
+
+/* REF BUILDER */
+.ref-builder{margin-bottom:20px;}
+.rb-scenario{background:rgba(245,200,66,.06);border:1px solid rgba(245,200,66,.2);border-radius:10px;padding:14px 16px;margin-bottom:14px;}
+.rb-scenario .rb-type{font-family:var(--font-m);font-size:0.7rem;color:var(--gold);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;}
+.rb-scenario p{font-size:0.85rem;color:var(--text);margin:0;}
+.rb-slots{display:flex;flex-direction:column;gap:8px;margin-bottom:12px;}
+.rb-slot{display:grid;grid-template-columns:110px 1fr 24px;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:9px 12px;}
+.rb-slot .sn{font-family:var(--font-m);font-size:0.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;}
+.rb-slot select{background:var(--card);color:var(--text);border:1px solid var(--border);border-radius:6px;padding:7px 10px;font-family:var(--font-b);font-size:0.83rem;cursor:pointer;outline:none;width:100%;}
+.rb-slot select:focus{border-color:var(--gold);}
+.rb-slot .sok{font-size:0.9rem;text-align:center;}
+.rb-preview{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px 16px;margin-top:4px;}
+.rp-label{font-family:var(--font-m);font-size:0.68rem;color:var(--teal);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px;}
+.rp-text{font-family:var(--font-m);font-size:0.8rem;line-height:1.9;word-break:break-word;}
+.rp-text .ph{color:var(--muted);font-style:italic;}
+.rp-text .ok{color:var(--teal);}
+.rp-text .err{color:var(--red);}
+
+/* ERROR FINDER */
+.ef-ref{font-family:var(--font-m);font-size:0.82rem;line-height:1.9;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px 16px;margin-bottom:12px;word-break:break-word;}
+.ef-checks{display:flex;flex-direction:column;gap:7px;margin-bottom:12px;}
+.ef-check{display:flex;align-items:flex-start;gap:10px;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 12px;cursor:pointer;transition:border-color .15s;}
+.ef-check:hover{border-color:var(--gold);}
+.ef-check input{margin-top:2px;accent-color:var(--gold);cursor:pointer;}
+.ef-check label{font-size:0.84rem;line-height:1.5;cursor:pointer;color:var(--text);}
+.ef-check.correct-sel{border-color:var(--teal);background:rgba(62,207,178,.07);}
+.ef-check.wrong-sel{border-color:var(--red);background:rgba(224,92,92,.07);}
+
+/* FINALE */
+.finale{text-align:center;padding:40px 12px;}
+.big-score{font-family:var(--font-d);font-size:4.5rem;font-weight:700;color:var(--gold);line-height:1;}
+.max-sc{font-size:1rem;color:var(--muted);margin-bottom:10px;}
+.trophy{background:var(--card);border:1px solid var(--gold);border-radius:var(--radius);padding:22px 26px;margin:24px auto;max-width:600px;text-align:left;}
+.trophy .tl{font-family:var(--font-m);font-size:0.68rem;color:var(--gold);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px;}
+.trophy ul{list-style:none;display:flex;flex-direction:column;gap:8px;}
+.trophy ul li{font-family:var(--font-m);font-size:0.79rem;color:var(--teal);line-height:1.6;padding-left:12px;border-left:2px solid var(--teal);}
+
+/* MODAL */
+.overlay{display:none;position:fixed;inset:0;background:rgba(10,16,28,.88);z-index:200;align-items:center;justify-content:center;}
+.overlay.show{display:flex;}
+.modal{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:36px 32px;max-width:460px;width:90%;text-align:center;}
+.modal .emoji{font-size:2.8rem;margin-bottom:14px;}
+.modal h2{font-family:var(--font-d);font-size:1.5rem;margin-bottom:8px;}
+.modal p{color:var(--muted);line-height:1.7;margin-bottom:18px;}
+.modal .pts{font-family:var(--font-d);font-size:2.2rem;color:var(--gold);font-weight:700;}
+.modal .pts-l{font-size:0.75rem;color:var(--muted);margin-bottom:20px;}
+
+/* RETURN LINK */
+.return-link{display:inline-flex;align-items:center;gap:6px;font-size:0.82rem;color:var(--muted);cursor:pointer;margin-bottom:20px;background:none;border:none;padding:0;font-family:var(--font-b);}
+.return-link:hover{color:var(--teal);}
+
+footer{width:100%;background:var(--surface);border-top:1px solid var(--border);padding:18px 28px;text-align:center;font-size:0.76rem;color:var(--muted);line-height:1.7;}
+footer strong{color:var(--text);}
+
+@media(max-width:640px){
+  .dnd-grid{grid-template-columns:1fr;}
+  .level-cards{grid-template-columns:1fr;}
+  .art-sec{grid-template-columns:1fr;}
+  .rb-slot{grid-template-columns:90px 1fr 20px;}
+  h1{font-size:1.7rem;}
+  main{padding:20px 14px 60px;}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">APA <span>Quest</span></div>
+  <div class="hdr-right">
+    <div class="score-chip" id="hdr-score">0 <small>pts</small></div>
+    <div class="score-chip" id="hdr-lvl" style="color:var(--muted);">Inicio</div>
+  </div>
+</header>
+
+<div class="prog-wrap">
+  <div class="prog-labels">
+    <span id="pl0">Inicio</span>
+    <span id="pl1">N1 · Lectura</span>
+    <span id="pl2">N2 · Citación</span>
+    <span id="pl3">N3 · IA generativa</span>
+    <span id="pl4">Completado</span>
+  </div>
+  <div class="prog-track"><div class="prog-fill" id="prog" style="width:0%"></div></div>
+</div>
+
+<!-- MENÚ DE NAVEGACIÓN LATERAL -->
+<div id="nav-menu" style="display:none;position:fixed;bottom:24px;right:24px;z-index:150;">
+  <div id="nav-panel" style="display:none;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:10px;min-width:220px;box-shadow:0 8px 32px rgba(0,0,0,.5);">
+    <div style="font-family:var(--font-m);font-size:0.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px;">Navegar a</div>
+    <div style="display:flex;flex-direction:column;gap:6px;" id="nav-links"></div>
+  </div>
+  <button onclick="toggleNavPanel()" id="nav-toggle"
+    style="background:var(--gold);color:#0F1B2D;border:none;border-radius:50%;width:48px;height:48px;font-size:1.2rem;cursor:pointer;box-shadow:0 4px 16px rgba(245,200,66,.4);font-weight:700;display:flex;align-items:center;justify-content:center;margin-left:auto;">
+    ☰
+  </button>
+</div>
+
+<main>
+
+<!-- ═══════════════════════════════════
+     PANTALLA 0 · INTRO
+═══════════════════════════════════ -->
+<div class="screen active" id="s-intro">
+  <div style="text-align:center;padding:40px 12px;">
+    <div class="badge">APA 7.ª Edición · Recurso de aprendizaje autónomo</div>
+    <h1 style="margin-bottom:14px;">Aprende a citar.<br><span style="color:var(--gold)">Paso a paso.</span></h1>
+    <p class="lead" style="max-width:560px;margin:0 auto 28px;">Este recurso te guía, a tu propio ritmo, para comprender y aplicar las normas APA en tu trabajo de grado. Cada nivel combina contenido educativo con práctica inmediata.</p>
+    <div class="level-cards">
+      <div class="lc">
+        <div class="lc-num">NIVEL 01</div>
+        <h3>Leer un artículo científico</h3>
+        <p>Conoce la anatomía de un artículo, cómo leer de forma estratégica y qué encontrarás en cada sección.</p>
+        <span class="mech">⟐ Aprende + Arrastra y suelta</span>
+        <div style="margin-top:10px;font-size:0.72rem;color:var(--muted);">⏱ ~10 minutos</div>
+      </div>
+      <div class="lc">
+        <div class="lc-num">NIVEL 02</div>
+        <h3>Los seis pasos de citación</h3>
+        <p>Domina el proceso completo: paráfrasis, cita textual, citas narrativas y parentéticas, construcción de referencias.</p>
+        <span class="mech">⟐ Aprende + Construye + Corrige</span>
+        <div style="margin-top:10px;font-size:0.72rem;color:var(--muted);">⏱ ~20 minutos</div>
+      </div>
+      <div class="lc">
+        <div class="lc-num">NIVEL 03</div>
+        <h3>Citar IA generativa</h3>
+        <p>Aprende las nuevas reglas APA 2025 para citar herramientas como ChatGPT, Claude y Gemini.</p>
+        <span class="mech">⟐ Aprende + Constructor guiado</span>
+        <div style="margin-top:10px;font-size:0.72rem;color:var(--muted);">⏱ ~10 minutos</div>
+      </div>
+    </div>
+    <button class="btn btn-gold" onclick="goToScreen('s-l1');setProgress(8,1);">Comenzar →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+     NIVEL 1 · LECTURA ESTRATÉGICA
+═══════════════════════════════════ -->
+<div class="screen" id="s-l1">
+
+  <!-- PÁGINA L1-0: PORTADA NIVEL -->
+  <div class="lesson-page active" id="l1p0">
+    <div class="eyebrow">// Nivel 01 · Lectura estratégica</div>
+    <h2>Cómo leer un artículo científico</h2>
+    <p class="lead">Antes de citar una fuente, debes leerla. Pero leer un artículo científico no es como leer una novela: no empieces por la primera página. En este nivel aprenderás a navegar la estructura de un artículo para encontrar exactamente lo que necesitas para tu trabajo de grado.</p>
+    <div class="info-box">
+      <div class="ib-label">¿Por qué importa esto?</div>
+      <p style="margin:0;font-size:0.9rem;">Citar sin leer es un riesgo académico: puedes malinterpretar la fuente, usarla para apoyar algo que contradice, o simplemente citar algo irrelevante. Las normas APA exigen que la atribución sea honesta y precisa.</p>
+    </div>
+    <div class="lesson-nav">
+      <span class="lesson-counter">Página 1 de 4</span>
+      <button class="btn btn-teal btn-sm" onclick="lessonPage('l1',1)">Siguiente →</button>
+    </div>
+  </div>
+
+  <!-- PÁGINA L1-1: ANATOMÍA -->
+  <div class="lesson-page" id="l1p1">
+    <div class="eyebrow">// Nivel 01 · Anatomía del artículo</div>
+    <h2>¿Qué hay dentro de un artículo?</h2>
+    <p>Un artículo científico tiene una estructura estandarizada. Conocerla te permite ir directamente a la sección que necesitas sin leer todo de principio a fin.</p>
+    <div class="art-sections">
+      <div class="art-sec">
+        <div class="sec-name">🪪 Título y autor</div>
+        <div class="sec-tip"><strong>¿Qué contiene?</strong> El tema, variables y población del estudio. Quién lo hizo y dónde trabaja.<br><strong>¿Para qué te sirve?</strong> Para decidir si el artículo es relevante antes de abrirlo.</div>
+      </div>
+      <div class="art-sec">
+        <div class="sec-name">❤️ Resumen (Abstract)</div>
+        <div class="sec-tip"><strong>¿Qué contiene?</strong> Síntesis del artículo en 150–250 palabras: objetivo, método, hallazgos y conclusiones.<br><strong>¿Para qué te sirve?</strong> Lee esto primero. Si el abstract no es relevante para tu argumento, el artículo probablemente tampoco lo sea. Es la herramienta de selección más eficiente.</div>
+      </div>
+      <div class="art-sec">
+        <div class="sec-name">🌳 Introducción</div>
+        <div class="sec-tip"><strong>¿Qué contiene?</strong> Antecedentes del tema, revisión de literatura previa, pregunta de investigación y justificación.<br><strong>¿Para qué te sirve?</strong> Ideal para encontrar otras fuentes relevantes (¡los artículos que citan son pistas!) y entender el problema que aborda el estudio.</div>
+      </div>
+      <div class="art-sec">
+        <div class="sec-name">🗺️ Método</div>
+        <div class="sec-tip"><strong>¿Qué contiene?</strong> Participantes, materiales, procedimientos y análisis. El "cómo".<br><strong>¿Para qué te sirve?</strong> Para saber si el diseño metodológico es comparable con tu propio trabajo o si los participantes son similares a tu población.</div>
+      </div>
+      <div class="art-sec">
+        <div class="sec-name">🎩 Resultados</div>
+        <div class="sec-tip"><strong>¿Qué contiene?</strong> Hallazgos: estadísticas, tablas, figuras. Sin interpretación.<br><strong>¿Para qué te sirve?</strong> Para citar datos concretos que respalden o contrasten tu argumento. Ojo: los resultados sin contexto de discusión pueden malinterpretarse.</div>
+      </div>
+      <div class="art-sec">
+        <div class="sec-name">💬 Discusión</div>
+        <div class="sec-tip"><strong>¿Qué contiene?</strong> Interpretación de resultados, limitaciones, implicaciones y líneas futuras.<br><strong>¿Para qué te sirve?</strong> Aquí están las conclusiones más citables. Los autores explican qué significan sus hallazgos: exactamente lo que necesitas para construir un argumento.</div>
+      </div>
+      <div class="art-sec">
+        <div class="sec-name">🧬 Lista de referencias</div>
+        <div class="sec-tip"><strong>¿Qué contiene?</strong> Todas las fuentes citadas en el texto.<br><strong>¿Para qué te sirve?</strong> Es un mapa del conocimiento que rodea el tema. Revísala para rastrear fuentes seminales o autores clave en tu área.</div>
+      </div>
+    </div>
+    <div class="lesson-nav flex-b">
+      <button class="btn btn-ghost btn-sm" onclick="lessonPage('l1',0)">← Anterior</button>
+      <span class="lesson-counter">Página 2 de 4</span>
+      <button class="btn btn-teal btn-sm" onclick="lessonPage('l1',2)">Siguiente →</button>
+    </div>
+  </div>
+
+  <!-- PÁGINA L1-2: ESTRATEGIA DE LECTURA -->
+  <div class="lesson-page" id="l1p2">
+    <div class="eyebrow">// Nivel 01 · Estrategia de lectura</div>
+    <h2>El orden estratégico para leer</h2>
+    <p>No leas un artículo de corrido. Los investigadores experimentados siguen una secuencia que ahorra tiempo y enfoca la atención:</p>
+    <div class="card card-teal mt16">
+      <h3 style="color:var(--teal);margin-bottom:12px;">Secuencia recomendada</h3>
+      <ol style="padding-left:20px;display:flex;flex-direction:column;gap:10px;">
+        <li><strong>Título y abstract</strong> — ¿Es relevante? ¿Vale la pena continuar?</li>
+        <li><strong>Introducción (final)</strong> — Lee la última parte para saber exactamente qué se propuso investigar.</li>
+        <li><strong>Discusión (inicio)</strong> — ¿Qué encontraron? ¿Coincide con lo que necesitas argumentar?</li>
+        <li><strong>Resultados</strong> — Solo si necesitas datos específicos o estadísticas.</li>
+        <li><strong>Método</strong> — Si vas a comparar diseños o poblaciones con tu propio estudio.</li>
+        <li><strong>Introducción completa</strong> — Para rastrear fuentes y entender el estado del arte.</li>
+        <li><strong>Referencias</strong> — Para ampliar tu red de fuentes.</li>
+      </ol>
+    </div>
+    <div class="warn-box mt16">
+      <div class="wb-label">⚠ Para tu trabajo de grado</div>
+      <p style="margin:0;font-size:0.88rem;">Cuando cites un artículo, pregúntate: <em>¿la sección que estoy citando respalda realmente lo que estoy afirmando?</em> Citar solo el abstract sin leer los resultados o la discusión puede llevarte a usar una fuente de forma imprecisa.</p>
+    </div>
+    <div class="lesson-nav flex-b">
+      <button class="btn btn-ghost btn-sm" onclick="lessonPage('l1',1)">← Anterior</button>
+      <span class="lesson-counter">Página 3 de 4</span>
+      <button class="btn btn-teal btn-sm" onclick="lessonPage('l1',3)">Ir a la actividad →</button>
+    </div>
+  </div>
+
+  <!-- PÁGINA L1-3: ACTIVIDAD -->
+  <div class="lesson-page" id="l1p3">
+    <div class="eyebrow">// Nivel 01 · Actividad</div>
+    <h2>Ubica cada sección</h2>
+    <p>Arrastra cada sección del artículo a la descripción de su función. Puedes volver al contenido en cualquier momento.</p>
+    <button class="return-link" onclick="lessonPage('l1',1)">← Volver al contenido educativo</button>
+
+    <div class="dnd-grid">
+      <div>
+        <p style="font-size:0.72rem;color:var(--muted);font-family:var(--font-m);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">Descripción de la función</p>
+        <div class="drop-list" id="l1-zones"></div>
+      </div>
+      <div>
+        <p style="font-size:0.72rem;color:var(--muted);font-family:var(--font-m);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">Secciones del artículo</p>
+        <div class="drag-pool" id="l1-pool"></div>
+      </div>
+    </div>
+
+    <div class="flex-c mt24">
+      <button class="btn btn-teal" id="btn-check-l1" onclick="checkL1()" disabled>Verificar →</button>
+      <button class="btn btn-ghost btn-sm" onclick="resetL1()">Reiniciar</button>
+    </div>
+    <div class="fb mt16" id="l1-fb"></div>
+
+    <div class="lesson-nav" style="justify-content:flex-end;">
+      <span class="lesson-counter">Página 4 de 4</span>
+    </div>
+  </div>
+
+</div><!-- /s-l1 -->
+
+<!-- ═══════════════════════════════════
+     NIVEL 2 · LOS SEIS PASOS
+═══════════════════════════════════ -->
+<div class="screen" id="s-l2">
+
+  <!-- PÁGINA L2-0: PORTADA -->
+  <div class="lesson-page active" id="l2p0">
+    <div class="eyebrow">// Nivel 02 · Los seis pasos de citación</div>
+    <h2>De la lectura a la referencia</h2>
+    <p class="lead">Citar correctamente no es solo poner el autor y el año. Es un proceso de seis pasos que garantiza que atribuyes las ideas de otros de manera honesta, precisa y verificable. Este nivel te enseña cada paso con ejemplos reales.</p>
+    <div class="warn-box">
+      <div class="wb-label">Fuentes que usaremos en los ejemplos</div>
+      <p style="font-size:0.85rem;margin-bottom:8px;"><strong>Libro:</strong> Cifuentes, G. y Caldas Quintero, A. (2018). <em>Lineamientos para investigar y evaluar innovaciones educativas.</em> Ediciones Uniandes.</p>
+      <p style="font-size:0.85rem;margin:0;"><strong>Artículo:</strong> Martín-Alonso, D., Blanco-García, N., &amp; Sierra-Nieto, J. E. (2021). Estudio fenomenológico sobre las disposiciones docentes en la relación pedagógica. <em>Magis, Revista Internacional De Investigación En Educación, 14,</em> 1–23. https://doi.org/10.11144/Javeriana.m14.efdd</p>
+    </div>
+    <div class="lesson-nav">
+      <span class="lesson-counter">Página 1 de 7</span>
+      <button class="btn btn-teal btn-sm" onclick="lessonPage('l2',1)">Siguiente →</button>
+    </div>
+  </div>
+
+  <!-- PÁGINA L2-1: PASOS 1-2 -->
+  <div class="lesson-page" id="l2p1">
+    <div class="eyebrow">// Pasos 1 y 2</div>
+    <h2>Leer → Identificar una idea</h2>
+    <div class="card card-teal">
+      <h3 style="color:var(--teal);">Paso 1 · LEER la fuente</h3>
+      <p>Antes de citar cualquier fuente, léela. Como aprendiste en el nivel anterior, no tienes que leer todo de corrido: ve al abstract, luego a la discusión, luego a lo que necesites. Pero no cites algo que no hayas leído.</p>
+    </div>
+    <div class="card card-gold mt16">
+      <h3 style="color:var(--gold);">Paso 2 · IDENTIFICAR la idea concreta</h3>
+      <p>No cites "el artículo completo". Identifica qué idea específica necesitas para tu argumento. Esto te ayudará a:</p>
+      <ul style="padding-left:18px;margin-top:8px;display:flex;flex-direction:column;gap:6px;font-size:0.9rem;">
+        <li>Decidir si parafrasearás o citarás textualmente.</li>
+        <li>Saber exactamente en qué página o sección está la idea.</li>
+        <li>Asegurarte de que la fuente realmente apoya lo que dices.</li>
+      </ul>
+    </div>
+    <div class="info-box mt16">
+      <div class="ib-label">Ejemplo</div>
+      <p style="font-size:0.88rem;margin:0;">Del artículo de Martín-Alonso et al. (2021), te interesa la idea de que las disposiciones docentes se construyen en la relación con los estudiantes, no como atributos previos. Eso es la idea concreta que vas a usar.</p>
+    </div>
+    <div class="lesson-nav flex-b">
+      <button class="btn btn-ghost btn-sm" onclick="lessonPage('l2',0)">← Anterior</button>
+      <span class="lesson-counter">Página 2 de 7</span>
+      <button class="btn btn-teal btn-sm" onclick="lessonPage('l2',2)">Siguiente →</button>
+    </div>
+  </div>
+
+  <!-- PÁGINA L2-2: PASO 3 PARÁFRASIS vs CITA -->
+  <div class="lesson-page" id="l2p2">
+    <div class="eyebrow">// Paso 3</div>
+    <h2>Escribir la oración: paráfrasis o cita textual</h2>
+    <p>Una vez identificada la idea, debes escribir tu oración. Tienes dos opciones:</p>
+
+    <table class="cmp-table">
+      <thead><tr><th>Tipo</th><th>Qué es</th><th>Cuándo usarla</th><th>Cómo se ve</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="td-label">Paráfrasis</td>
+          <td>Reformular la idea con tus propias palabras</td>
+          <td>La mayoría de las veces. Demuestra comprensión genuina y mantiene tu voz.</td>
+          <td style="font-size:0.8rem;">Las disposiciones docentes no son rasgos fijos sino que se configuran en el vínculo pedagógico (Martín-Alonso et al., 2021).</td>
+        </tr>
+        <tr>
+          <td class="td-label">Cita textual corta (&lt;40 palabras)</td>
+          <td>Las palabras exactas del autor, entre comillas dobles</td>
+          <td>Cuando las palabras del autor son insustituibles: definiciones, conceptos específicos, declaraciones históricas.</td>
+          <td style="font-size:0.8rem;">Los autores señalan que "las disposiciones docentes emergen en la trama de la relación pedagógica" (Martín-Alonso et al., 2021, p. 8).</td>
+        </tr>
+        <tr>
+          <td class="td-label">Cita textual larga (≥40 palabras)</td>
+          <td>Bloque sangrado, sin comillas, con punto final antes de la cita parentética</td>
+          <td>Rara vez. Solo cuando el fragmento es central al análisis y no puede reducirse.</td>
+          <td style="font-size:0.8rem;">El texto va en bloque sangrado a 1.27 cm del margen izquierdo, sin comillas. (Martín-Alonso et al., 2021, p. 8)</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="warn-box">
+      <div class="wb-label">⚠ Evitar el patchwriting</div>
+      <p style="font-size:0.88rem;margin:0;">Cambiar solo algunas palabras por sinónimos no es parafrasear: es patchwriting, una forma de plagio. Una buena paráfrasis cambia la estructura de la oración y el vocabulario, no solo sustituye palabras.</p>
+    </div>
+    <div class="lesson-nav flex-b">
+      <button class="btn btn-ghost btn-sm" onclick="lessonPage('l2',1)">← Anterior</button>
+      <span class="lesson-counter">Página 3 de 7</span>
+      <button class="btn btn-teal btn-sm" onclick="lessonPage('l2',3)">Siguiente →</button>
+    </div>
+  </div>
+
+  <!-- PÁGINA L2-3: PASO 4-5 CITAS -->
+  <div class="lesson-page" id="l2p3">
+    <div class="eyebrow">// Pasos 4 y 5</div>
+    <h2>Referencia y cita dentro del texto</h2>
+
+    <h3 style="margin-bottom:8px;">Citas dentro del texto: dos formatos</h3>
+    <p>APA tiene dos formas de citar dentro del cuerpo de tu escrito:</p>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:14px 0;">
+      <div class="card card-teal">
+        <h3 style="color:var(--teal);font-size:1rem;">Cita narrativa</h3>
+        <p style="font-size:0.85rem;margin-bottom:8px;">El nombre del autor forma parte de la oración. El año va entre paréntesis inmediatamente después.</p>
+        <div class="ref-block" style="font-size:0.8rem;">Martín-Alonso et al. (2021) señalan que las disposiciones docentes se configuran relacionalmente.</div>
+        <p style="font-size:0.78rem;color:var(--muted);margin:6px 0 0;">Formato: Autor (año) + verbo + idea</p>
+      </div>
+      <div class="card card-gold">
+        <h3 style="color:var(--gold);font-size:1rem;">Cita parentética</h3>
+        <p style="font-size:0.85rem;margin-bottom:8px;">El nombre del autor y el año van juntos entre paréntesis al final de la oración, antes del punto.</p>
+        <div class="ref-block" style="font-size:0.8rem;">Las disposiciones docentes se configuran en la relación pedagógica (Martín-Alonso et al., 2021).</div>
+        <p style="font-size:0.78rem;color:var(--muted);margin:6px 0 0;">Formato: idea + (Autor, año).</p>
+      </div>
+    </div>
+
+    <div class="info-box">
+      <div class="ib-label">Dos o más autores</div>
+      <p style="font-size:0.85rem;margin-bottom:6px;"><strong>Dos autores:</strong> siempre nombra los dos. En cita narrativa: "Cifuentes y Caldas Quintero (2018)". En parentética: "(Cifuentes &amp; Caldas Quintero, 2018)".</p>
+      <p style="font-size:0.85rem;margin:0;"><strong>Tres o más autores:</strong> usa "et al." desde la primera cita. Ejemplo: "Martín-Alonso et al. (2021)" o "(Martín-Alonso et al., 2021)".</p>
+    </div>
+
+    <div class="warn-box mt16">
+      <div class="wb-label">Número de página en citas textuales</div>
+      <p style="font-size:0.85rem;margin:0;">Si usas una cita textual (palabras exactas del autor), debes agregar el número de página o párrafo. Ejemplo: (Martín-Alonso et al., 2021, p. 8) o, en narrativa: Martín-Alonso et al. (2021) afirman que "..." (p. 8).</p>
+    </div>
+
+    <div class="lesson-nav flex-b">
+      <button class="btn btn-ghost btn-sm" onclick="lessonPage('l2',2)">← Anterior</button>
+      <span class="lesson-counter">Página 4 de 7</span>
+      <button class="btn btn-teal btn-sm" onclick="lessonPage('l2',4)">Siguiente →</button>
+    </div>
+  </div>
+
+  <!-- PÁGINA L2-4: ANATOMÍA DE LA REFERENCIA -->
+  <div class="lesson-page" id="l2p4">
+    <div class="eyebrow">// Paso 4 · Entrada en la lista de referencias</div>
+    <h2>Cómo construir una referencia</h2>
+    <p>Toda fuente que cites en el texto debe aparecer en la lista de referencias con cuatro elementos: <strong>Autor · Fecha · Título · Fuente</strong>.</p>
+
+    <div class="ref-anatomy">
+      <span class="ref-part rp-author">Autor</span>
+      <span class="ref-part rp-year">Fecha</span>
+      <span class="ref-part rp-title">Título</span>
+      <span class="ref-part rp-source">Fuente</span>
+    </div>
+
+    <h3 style="margin:18px 0 10px;">Ejemplos con estructura anotada</h3>
+
+    <p style="font-size:0.8rem;color:var(--muted);font-family:var(--font-m);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Libro</p>
+    <div class="ref-block">
+      <span style="color:var(--gold);">Cifuentes, G. y Caldas Quintero, A.</span>
+      <span style="color:var(--teal);">(2018).</span>
+      <em style="color:var(--text);">Lineamientos para investigar y evaluar innovaciones educativas.</em>
+      <span style="color:var(--red);">Ediciones Uniandes.</span>
+    </div>
+    <div class="ref-anatomy" style="margin-bottom:16px;">
+      <span class="ref-part rp-author">Autor: apellido, inicial</span>
+      <span class="ref-part rp-year">Año entre paréntesis</span>
+      <span class="ref-part rp-title">Título en cursiva</span>
+      <span class="ref-part rp-source">Editorial</span>
+    </div>
+
+    <p style="font-size:0.8rem;color:var(--muted);font-family:var(--font-m);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Artículo de revista con DOI</p>
+    <div class="ref-block"><span style="color:var(--gold);">Martín-Alonso, D., Blanco-García, N., &amp; Sierra-Nieto, J. E.</span> <span style="color:var(--teal);">(2021).</span> <span style="color:var(--text);">Estudio fenomenológico sobre las disposiciones docentes en la relación pedagógica.</span> <em style="color:var(--red);">Magis, Revista Internacional De Investigación En Educación, 14,</em> <span style="color:var(--red);">1–23. https://doi.org/10.11144/Javeriana.m14.efdd</span></div>
+    <div class="ref-anatomy">
+      <span class="ref-part rp-author">Todos los autores (hasta 20)</span>
+      <span class="ref-part rp-year">Año</span>
+      <span class="ref-part rp-title">Título del artículo sin cursiva</span>
+      <span class="ref-part rp-source">Revista en cursiva, vol., págs., DOI</span>
+    </div>
+
+    <div class="lesson-nav flex-b">
+      <button class="btn btn-ghost btn-sm" onclick="lessonPage('l2',3)">← Anterior</button>
+      <span class="lesson-counter">Página 5 de 7</span>
+      <button class="btn btn-teal btn-sm" onclick="lessonPage('l2',5)">Siguiente →</button>
+    </div>
+  </div>
+
+  <!-- PÁGINA L2-5: OTROS TIPOS DE REFERENCIA -->
+  <div class="lesson-page" id="l2p5">
+    <div class="eyebrow">// Tipos de referencia</div>
+    <h2>Más tipos de fuente</h2>
+
+    <p style="font-size:0.8rem;color:var(--muted);font-family:var(--font-m);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Capítulo de libro editado</p>
+ <div class="ref-block"><span style="color:var(--gold);">Reimers, F., Azim, Z., Palomo, M. R., &amp; Thony, C.</span> <span style="color:var(--teal);">(2026).</span> <span style="color:var(--text);">Education and Artificial Intelligence: A Systems Approach.</span> <span style="color:var(--red);">En</span> <em style="color:var(--red);">Artificial Intelligence and Education in the Global South.</em> <span style="color:var(--red);">Springer. https://doi.org/10.1007/978-3-032-11449-5_1</span></div>
+    <div class="ref-anatomy" style="margin-bottom:4px;">
+      <span class="ref-part rp-author">Autores del capítulo</span>
+      <span class="ref-part rp-year">Año</span>
+      <span class="ref-part rp-title">Título del capítulo (sin cursiva)</span>
+      <span class="ref-part rp-source">En + Título del libro en cursiva + Editorial + DOI</span>
+    </div>
+    <div class="warn-box" style="margin:10px 0 16px;">
+      <div class="wb-label">Nota sobre este ejemplo</div>
+      <p style="font-size:0.84rem;margin:0;">Cuando el capítulo tiene los mismos autores que el libro completo (sin editor distinto), se omite la parte "En Editor (Ed.)". Si el libro tiene editores diferentes a los autores del capítulo, la forma es: <span style="font-family:var(--font-m);font-size:0.8rem;">En I. Editor (Ed.), <em>Título del libro</em> (pp. xx–xx). Editorial.</span></p>
+    </div>
+
+    <p style="font-size:0.8rem;color:var(--muted);font-family:var(--font-m);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Informe / documento de organismo</p>
+   <div class="ref-block"><span style="color:var(--gold);">Unesco.</span> <span style="color:var(--teal);">(2025).</span> <em style="color:var(--red);">AI and education: protecting the rights of learners.</em> <span style="color:var(--red);">https://doi.org/10.54675/ROQH4287</span></div>
+    <div class="ref-anatomy" style="margin-bottom:16px;">
+      <span class="ref-part rp-author">Organismo como autor</span>
+      <span class="ref-part rp-year">Año</span>
+      <span class="ref-part rp-title">Título del informe en cursiva</span>
+      <span class="ref-part rp-source">URL o DOI (sin editorial si el organismo es autor y editor)</span>
+    </div>
+
+    <p style="font-size:0.8rem;color:var(--muted);font-family:var(--font-m);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Video de YouTube</p>
+    <div class="ref-block"><span style="color:var(--gold);">Charlesworth, R.</span> <span style="color:var(--teal);">(2014, 25 septiembre).</span> <em style="color:var(--text);">Schooling the World 2010</em> <span style="color:var(--text);">[Vídeo].</span> <span style="color:var(--red);">YouTube. https://www.youtube.com/watch?v=oDxYWspiN-8</span></div>
+    <div class="ref-anatomy" style="margin-bottom:16px;">
+      <span class="ref-part rp-author">Apellido, I. (o nombre del canal)</span>
+      <span class="ref-part rp-year">Año, día mes</span>
+      <span class="ref-part rp-title">Título en cursiva + [Vídeo]</span>
+      <span class="ref-part rp-source">YouTube. + URL</span>
+    </div>
+
+    <div class="card card-red" style="border-color:var(--gold);background:rgba(245,200,66,0.06);margin-top:8px;">
+      <h3 style="color:var(--gold);font-size:1rem;margin-bottom:10px;">⚖ Regla de oro: correspondencia total</h3>
+      <p style="font-size:0.88rem;margin-bottom:8px;"><strong>Todo lo que cites en el texto debe aparecer en la lista de referencias.</strong> Si escribes (Reimers et al., 2026) en tu trabajo, esa fuente tiene que estar en la lista.</p>
+      <p style="font-size:0.88rem;margin:0;"><strong>Todo lo que esté en la lista de referencias debe estar citado en el texto.</strong> No puedes incluir fuentes que consultaste pero no citaste: eso sería una bibliografía, no una lista de referencias APA.</p>
+    </div>
+
+    <div class="info-box mt16">
+      <div class="ib-label">Paso 6 · REPETIR</div>
+      <p style="font-size:0.88rem;margin:0;">Por cada idea que uses de una fuente, repite el proceso: leer → identificar → escribir → referenciar → citar en el texto. APA 7.ª ed. no usa "ibíd." ni "op. cit.": cada cita lleva siempre autor y año.</p>
+    </div>
+
+    <div class="lesson-nav flex-b">
+      <button class="btn btn-ghost btn-sm" onclick="lessonPage('l2',4)">← Anterior</button>
+      <span class="lesson-counter">Página 6 de 7</span>
+      <button class="btn btn-teal btn-sm" onclick="lessonPage('l2',6)">Ir a las actividades →</button>
+    </div>
+  </div>
+
+  <!-- PÁGINA L2-6: ACTIVIDADES -->
+  <div class="lesson-page" id="l2p6">
+    <div class="eyebrow">// Nivel 02 · Actividades</div>
+    <h2>Practica: citas y referencias</h2>
+    <p>Tres actividades en secuencia: primero identifica errores en referencias existentes, luego construye referencias desde cero, y a lo largo del camino responde preguntas sobre citas en el texto.</p>
+    <button class="return-link" onclick="lessonPage('l2',4)">← Volver al contenido educativo</button>
+
+    <!-- PARTE A: QUIZ SOBRE CITAS -->
+    <h3 style="margin-bottom:14px;">Parte A · Citas en el texto</h3>
+    <div class="q-dots" id="l2-dots"></div>
+    <div class="card" id="l2-qcard">
+      <div class="q-step" id="l2-qstep"></div>
+      <div class="q-text" id="l2-qtext"></div>
+      <div class="q-opts" id="l2-qopts"></div>
+      <div class="fb" id="l2-qfb"></div>
+    </div>
+    <div class="flex-c mt16">
+      <button class="btn btn-teal btn-sm" id="btn-l2-next" onclick="l2NextQ()" disabled></button>
+    </div>
+
+    <!-- PARTE B: ERROR FINDER (se muestra tras el quiz) -->
+    <div id="l2-errors" style="display:none;">
+      <h3 style="margin:28px 0 10px;">Parte B · Encuentra los errores</h3>
+      <p style="font-size:0.88rem;color:var(--muted);margin-bottom:14px;">Las siguientes referencias tienen errores. Marca todos los que encuentres antes de construir las tuyas: así sabrás qué evitar.</p>
+      <div id="l2-error-content"></div>
+      <div class="flex-c mt16">
+        <button class="btn btn-teal" onclick="checkL2Errors()">Verificar →</button>
+      </div>
+      <div class="fb mt16" id="l2-error-fb"></div>
+    </div>
+
+    <!-- PARTE C: CONSTRUCTOR (se muestra tras los errores) -->
+    <div id="l2-builder" style="display:none;">
+      <h3 style="margin:28px 0 6px;">Parte C · Construye la referencia correcta</h3>
+      <p style="font-size:0.88rem;color:var(--muted);margin-bottom:14px;">Ahora que identificaste los errores más comunes, construye las referencias correctas seleccionando cada elemento.</p>
+      <div id="l2-builder-content"></div>
+      <div class="flex-c mt16">
+        <button class="btn btn-teal" onclick="checkL2Builder()">Verificar referencias →</button>
+        <button class="btn btn-ghost btn-sm" onclick="resetL2Builder()">Reiniciar</button>
+      </div>
+      <div class="fb mt16" id="l2-builder-fb"></div>
+    </div>
+
+    <div class="lesson-nav" style="justify-content:flex-end;">
+      <span class="lesson-counter">Página 7 de 7</span>
+    </div>
+  </div>
+
+</div><!-- /s-l2 -->
+
+<!-- ═══════════════════════════════════
+     NIVEL 3 · IA GENERATIVA
+═══════════════════════════════════ -->
+<div class="screen" id="s-l3">
+
+  <!-- PÁGINA L3-0: PORTADA -->
+  <div class="lesson-page active" id="l3p0">
+    <div class="eyebrow">// Nivel 03 · Citar IA generativa</div>
+    <h2>¿Por qué citar las herramientas de IA?</h2>
+    <p class="lead">Usar ChatGPT, Claude, Gemini u otras herramientas de IA en tu proceso de escritura académica es legítimo en muchos contextos: editar, buscar ideas, traducir, generar código. Pero si las usas, debes citarlas. La transparencia es un principio fundamental de la comunicación científica.</p>
+    <div class="info-box">
+      <div class="ib-label">¿Cuándo citar IA?</div>
+      <ul style="padding-left:16px;font-size:0.88rem;display:flex;flex-direction:column;gap:6px;">
+        <li>Si usaste un chat de IA para generar, analizar o sintetizar contenido que aparece en tu trabajo.</li>
+        <li>Si utilizaste la herramienta como parte de tu metodología.</li>
+        <li>Si el uso de IA es relevante para que el lector pueda evaluar o replicar tu trabajo.</li>
+      </ul>
+    </div>
+    <div class="warn-box mt16">
+      <div class="wb-label">¿Cuándo NO necesitas citar?</div>
+      <p style="font-size:0.88rem;margin:0;">Si usaste IA solo para corregir gramática o mejorar el flujo de un texto que es completamente tuyo, puede ser suficiente con una nota en el apartado de método o en la nota de autor, sin crear una referencia completa.</p>
+    </div>
+    <div class="lesson-nav">
+      <span class="lesson-counter">Página 1 de 4</span>
+      <button class="btn btn-teal btn-sm" onclick="lessonPage('l3',1)">Siguiente →</button>
+    </div>
+  </div>
+
+  <!-- PÁGINA L3-1: DOS TIPOS DE CITA IA -->
+  <div class="lesson-page" id="l3p1">
+    <div class="eyebrow">// Dos formas de citar IA</div>
+    <h2>Chat específico vs. herramienta general</h2>
+    <p>APA (2025) distingue dos situaciones:</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0;">
+      <div class="card card-teal">
+        <h3 style="color:var(--teal);font-size:1rem;margin-bottom:8px;">Citar un chat específico</h3>
+        <p style="font-size:0.84rem;margin-bottom:10px;">Cuando el chat tiene URL compartible y quieres que el lector pueda acceder a la conversación exacta.</p>
+        <div class="ref-block" style="font-size:0.76rem;">Anthropic. (2025, 20 de mayo). <em>Temas de gramática para secundaria</em> [chat de IA generativa]. Claude Sonnet 4. https://claude.ai/share/xxxxx</div>
+      </div>
+      <div class="card card-gold">
+        <h3 style="color:var(--gold);font-size:1rem;margin-bottom:8px;">Citar la herramienta en general</h3>
+        <p style="font-size:0.84rem;margin-bottom:10px;">Cuando usaste la IA para editar, traducir u otras tareas donde el chat específico no es recuperable o relevante.</p>
+        <div class="ref-block" style="font-size:0.76rem;">OpenAI. (2025). <em>ChatGPT</em> [Modelo de lenguaje grande]. https://chatgpt.com/</div>
+      </div>
+    </div>
+    <div class="info-box">
+      <div class="ib-label">Estructura: los cuatro elementos</div>
+      <div class="ref-anatomy">
+        <span class="ref-part rp-author">Empresa (autor)</span>
+        <span class="ref-part rp-year">Fecha exacta o año</span>
+        <span class="ref-part rp-title">Título del chat o modelo [descripción]</span>
+        <span class="ref-part rp-source">Modelo + URL</span>
+      </div>
+    </div>
+    <div class="lesson-nav flex-b">
+      <button class="btn btn-ghost btn-sm" onclick="lessonPage('l3',0)">← Anterior</button>
+      <span class="lesson-counter">Página 2 de 4</span>
+      <button class="btn btn-teal btn-sm" onclick="lessonPage('l3',2)">Siguiente →</button>
+    </div>
+  </div>
+
+  <!-- PÁGINA L3-2: DETALLES -->
+  <div class="lesson-page" id="l3p2">
+    <div class="eyebrow">// Detalles importantes APA 2025</div>
+    <h2>Lo que cambió y lo que debes saber</h2>
+    <div class="card card-teal">
+      <h3 style="font-size:1rem;margin-bottom:10px;color:var(--teal);">Ya no se incluye número de versión</h3>
+      <p style="font-size:0.86rem;">APA (2025) eliminó la recomendación de incluir el número de versión en las referencias. Usa el nombre del modelo si está disponible (p. ej., "Claude Sonnet 4", "Gemini 2.5 Flash") o el nombre general de la herramienta.</p>
+    </div>
+    <div class="card card-gold mt16">
+      <h3 style="font-size:1rem;margin-bottom:10px;color:var(--gold);">La IA no puede ser autora</h3>
+      <p style="font-size:0.86rem;">La IA no es autora porque no puede dar consentimiento ni asumir responsabilidades de autoría. El autor de la referencia es siempre la <strong>empresa</strong> que desarrolló la herramienta (Anthropic, OpenAI, Google, etc.).</p>
+    </div>
+    <div class="info-box mt16">
+      <div class="ib-label">Documentar los prompts</div>
+      <p style="font-size:0.86rem;margin:0;">Los prompts que usaste no forman parte de la referencia, pero puedes describirlos en la sección de método de tu trabajo. Esto aumenta la transparencia y permite que otros investigadores repliquen o comparen resultados.</p>
+    </div>
+    <div class="lesson-nav flex-b">
+      <button class="btn btn-ghost btn-sm" onclick="lessonPage('l3',1)">← Anterior</button>
+      <span class="lesson-counter">Página 3 de 4</span>
+      <button class="btn btn-teal btn-sm" onclick="lessonPage('l3',3)">Ir a la actividad →</button>
+    </div>
+  </div>
+
+  <!-- PÁGINA L3-3: ACTIVIDAD -->
+  <div class="lesson-page" id="l3p3">
+    <div class="eyebrow">// Nivel 03 · Actividad</div>
+    <h2>Construye las referencias de IA</h2>
+    <p>Selecciona el valor correcto para cada elemento. La vista previa se actualiza en tiempo real.</p>
+    <button class="return-link" onclick="lessonPage('l3',1)">← Volver al contenido educativo</button>
+    <div id="l3-content"></div>
+    <div class="flex-c mt24">
+      <button class="btn btn-teal" onclick="checkL3()">Verificar →</button>
+      <button class="btn btn-ghost btn-sm" onclick="resetL3()">Reiniciar</button>
+    </div>
+    <div class="fb mt16" id="l3-fb"></div>
+    <div class="lesson-nav" style="justify-content:flex-end;">
+      <span class="lesson-counter">Página 4 de 4</span>
+    </div>
+  </div>
+
+</div><!-- /s-l3 -->
+
+<!-- ═══════════════════════════════════
+     PANTALLA FINAL
+═══════════════════════════════════ -->
+<div class="screen" id="s-finale">
+  <div class="finale">
+    <div class="big-score" id="f-score">0</div>
+    <div class="max-sc">de 300 puntos posibles</div>
+    <h2 id="f-title" style="margin:14px 0 10px;"></h2>
+    <p id="f-desc" style="color:var(--muted);max-width:540px;margin:0 auto 24px;line-height:1.7;"></p>
+    <div class="trophy">
+      <div class="tl">📋 Claves aprendidas — Trofeo APA</div>
+      <ul id="f-list"></ul>
+    </div>
+    <div class="flex-c mt28">
+      <button class="btn btn-gold" onclick="restartGame()">Jugar de nuevo</button>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<!-- MODAL -->
+<div class="overlay" id="modal">
+  <div class="modal">
+    <div class="emoji" id="m-emoji"></div>
+    <h2 id="m-title"></h2>
+    <p id="m-desc"></p>
+    <div class="pts" id="m-pts"></div>
+    <div class="pts-l">puntos obtenidos en este nivel</div>
+    <div class="flex-c mt16">
+      <button class="btn btn-gold" onclick="modalNext()">Continuar →</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  Recurso pedagógico diseñado por <strong>Camila Suárez-Acevedo</strong>, 2026. © Todos los derechos reservados.<br>
+  Basado en: American Psychological Association. (2020). <em>Publication Manual of the APA</em> (7.ª ed.) &amp; APA Style Blog (2025) · Manual de Normas APA 7.ª ed., Pontificia Universidad Javeriana Cali.
+</footer>
+
+<script>
+/* ─────────────────────────────────────
+   NAVEGACIÓN LIBRE — MENÚ LATERAL
+───────────────────────────────────── */
+// Registro de secciones visitadas: 0=intro, 1..N=páginas de cada nivel
+const visited = { intro:false, l1:false, l2:false, l3:false, finale:false };
+
+const NAV_ITEMS = [
+  { key:'intro',   label:'🏠 Inicio',                   action:() => { goToScreen('s-intro'); } },
+  { key:'l1',      label:'📖 N1 · Leer artículos',      action:() => { goToScreen('s-l1'); lessonPage('l1',0); } },
+  { key:'l2',      label:'✍️ N2 · Los seis pasos',      action:() => { goToScreen('s-l2'); lessonPage('l2',0); } },
+  { key:'l3',      label:'🤖 N3 · Citar IA generativa', action:() => { goToScreen('s-l3'); lessonPage('l3',0); } },
+  { key:'finale',  label:'🏆 Resultado final',           action:() => goToScreen('s-finale') },
+];
+
+function unlockNav(key) {
+  visited[key] = true;
+  renderNavLinks();
+  document.getElementById('nav-menu').style.display = 'block';
+}
+
+function renderNavLinks() {
+  const el = document.getElementById('nav-links');
+  el.innerHTML = '';
+  NAV_ITEMS.forEach(item => {
+    if (!visited[item.key]) return;
+    const btn = document.createElement('button');
+    btn.style.cssText = 'background:var(--surface);border:1px solid var(--border);border-radius:7px;padding:8px 12px;color:var(--text);font-family:var(--font-b);font-size:0.83rem;cursor:pointer;text-align:left;transition:border-color .15s;width:100%;';
+    btn.textContent = item.label;
+    btn.onmouseover = () => btn.style.borderColor = 'var(--teal)';
+    btn.onmouseout  = () => btn.style.borderColor = 'var(--border)';
+    btn.onclick = () => { item.action(); toggleNavPanel(false); };
+    el.appendChild(btn);
+  });
+}
+
+function toggleNavPanel(force) {
+  const panel = document.getElementById('nav-panel');
+  const show = force !== undefined ? force : panel.style.display === 'none';
+  panel.style.display = show ? 'block' : 'none';
+}
+
+// Cerrar panel al hacer clic fuera
+document.addEventListener('click', e => {
+  const menu = document.getElementById('nav-menu');
+  if (menu && !menu.contains(e.target)) toggleNavPanel(false);
+});
+
+/* ─────────────────────────────────────
+   ESTADO GLOBAL
+───────────────────────────────────── */
+let totalScore = 0;
+let currentLevel = 0;
+let modalAction = null;
+
+// Puntos por nivel: techo fijo de 100 cada uno
+const N1_MAX = 100;
+const N2_MAX = 100; // 25 quiz (4q×~6.25) + 40 constructor + 35 errores
+const N3_MAX = 100;
+
+// Contadores parciales N2 (se suman al final del nivel)
+let n2QuizCorrect   = 0;  // cuántas preguntas correctas del quiz
+let n2BuildCorrect  = 0;  // elementos correctos del constructor
+let n2BuildTotal    = 0;
+let n2ErrorCorrect  = 0;  // respuestas correctas del buscador de errores
+let n2ErrorTotal    = 0;
+
+/* ─────────────────────────────────────
+   NAVEGACIÓN GENERAL
+───────────────────────────────────── */
+function goToScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+  // Desbloquear sección en menú
+  const key = id.replace('s-','').replace('-','');
+  if (key === 'intro') unlockNav('intro');
+  if (key === 'sl1' || id === 's-l1') unlockNav('l1');
+  if (key === 'sl2' || id === 's-l2') unlockNav('l2');
+  if (key === 'sl3' || id === 's-l3') unlockNav('l3');
+  if (key === 'sfinale' || id === 's-finale') unlockNav('finale');
+}
+
+function setProgress(pct, lvl) {
+  document.getElementById('prog').style.width = pct + '%';
+  ['pl0','pl1','pl2','pl3','pl4'].forEach((id,i) => {
+    const el = document.getElementById(id);
+    if (el) el.className = (i === lvl) ? 'active' : '';
+  });
+  document.getElementById('hdr-lvl').textContent = lvl > 0 && lvl < 4 ? 'Nivel ' + lvl + '/3' : (lvl === 4 ? '✓ Completado' : 'Inicio');
+}
+
+function updateScore() {
+  document.getElementById('hdr-score').innerHTML = totalScore + ' <small>pts</small>';
+}
+
+/* ─────────────────────────────────────
+   LECCIÓN PAGES
+───────────────────────────────────── */
+function lessonPage(prefix, n) {
+  const screens = document.querySelectorAll(`#s-${prefix} .lesson-page`);
+  screens.forEach((s,i) => s.classList.toggle('active', i === n));
+  window.scrollTo(0,0);
+}
+
+/* ─────────────────────────────────────
+   MODAL
+───────────────────────────────────── */
+function showModal(emoji, title, desc, pts, next) {
+  document.getElementById('m-emoji').textContent = emoji;
+  document.getElementById('m-title').textContent = title;
+  document.getElementById('m-desc').textContent = desc;
+  document.getElementById('m-pts').textContent = '+' + pts;
+  modalAction = next;
+  document.getElementById('modal').classList.add('show');
+}
+function modalNext() {
+  document.getElementById('modal').classList.remove('show');
+  if (modalAction) modalAction();
+}
+
+/* ═══════════════════════════════════════
+   NIVEL 1 · DRAG & DROP
+═══════════════════════════════════════ */
+const L1_ITEMS = [
+  { id:'abstract', zone:'Lee esto primero: resume todo el artículo en ≤250 palabras',    tag:'Resumen / Abstract' },
+  { id:'intro',    zone:'Aquí están los antecedentes y la pregunta de investigación',     tag:'Introducción' },
+  { id:'method',   zone:'Describe participantes, materiales y procedimientos del estudio', tag:'Método' },
+  { id:'results',  zone:'Presenta hallazgos: estadísticas, tablas, figuras',              tag:'Resultados' },
+  { id:'discuss',  zone:'Interpreta resultados, limitaciones e implicaciones',             tag:'Discusión' },
+  { id:'refs',     zone:'Lista todas las fuentes citadas; es el mapa del conocimiento',   tag:'Lista de referencias' },
+  { id:'title',    zone:'El tema, variables y quién hizo la investigación',               tag:'Título y autor' },
+];
+
+let l1Placed = {};
+let l1Dragged = null;
+
+function buildL1() {
+  l1Placed = {};
+  const zonesEl = document.getElementById('l1-zones');
+  const poolEl  = document.getElementById('l1-pool');
+  zonesEl.innerHTML = '';
+  poolEl.innerHTML  = '';
+
+  L1_ITEMS.forEach(item => {
+    const zone = document.createElement('div');
+    zone.className = 'drop-zone';
+    zone.dataset.zid = item.id;
+    zone.innerHTML = `<span class="dz-label">${item.zone}</span>`;
+    zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('over'); });
+    zone.addEventListener('dragleave', () => zone.classList.remove('over'));
+    zone.addEventListener('drop', e => { e.preventDefault(); zone.classList.remove('over'); dropOnZone(item.id); });
+    zonesEl.appendChild(zone);
+  });
+
+  [...L1_ITEMS].sort(() => Math.random() - 0.5).forEach(item => {
+    const tag = document.createElement('div');
+    tag.className = 'drag-tag';
+    tag.id = 'l1tag-' + item.id;
+    tag.textContent = item.tag;
+    tag.draggable = true;
+    tag.addEventListener('dragstart', () => { l1Dragged = item.id; tag.classList.add('dragging'); });
+    tag.addEventListener('dragend', () => tag.classList.remove('dragging'));
+    poolEl.appendChild(tag);
+  });
+
+  document.getElementById('btn-check-l1').disabled = true;
+  const fb = document.getElementById('l1-fb');
+  fb.className = 'fb mt16'; fb.textContent = '';
+}
+
+function dropOnZone(zoneId) {
+  if (!l1Dragged) return;
+  // liberar zona anterior del mismo tag
+  for (const [z,t] of Object.entries(l1Placed)) {
+    if (t === l1Dragged) {
+      delete l1Placed[z];
+      const oldZ = document.querySelector(`[data-zid="${z}"]`);
+      const ch = oldZ.querySelector('.placed-chip');
+      if (ch) ch.remove();
+    }
+  }
+  // liberar tag anterior de esta zona
+  if (l1Placed[zoneId]) {
+    const prev = document.getElementById('l1tag-' + l1Placed[zoneId]);
+    if (prev) prev.classList.remove('used');
+  }
+  l1Placed[zoneId] = l1Dragged;
+
+  const zEl = document.querySelector(`[data-zid="${zoneId}"]`);
+  const old = zEl.querySelector('.placed-chip');
+  if (old) old.remove();
+
+  const chip = document.createElement('div');
+  chip.className = 'placed-chip';
+  chip.textContent = L1_ITEMS.find(i => i.id === l1Dragged).tag;
+  chip.draggable = true;
+  chip.addEventListener('dragstart', () => { l1Dragged = l1Placed[zoneId]; });
+  zEl.appendChild(chip);
+
+  const tagEl = document.getElementById('l1tag-' + l1Dragged);
+  if (tagEl) tagEl.classList.add('used');
+  l1Dragged = null;
+
+  document.getElementById('btn-check-l1').disabled = Object.keys(l1Placed).length < L1_ITEMS.length;
+}
+
+function checkL1() {
+  let correct = 0;
+  L1_ITEMS.forEach(item => {
+    const zEl = document.querySelector(`[data-zid="${item.id}"]`);
+    zEl.classList.remove('correct','incorrect');
+    if (l1Placed[item.id] === item.id) { zEl.classList.add('correct'); correct++; }
+    else zEl.classList.add('incorrect');
+  });
+  // N1: puntuación proporcional con techo fijo de 100
+  const pts = Math.min(N1_MAX, Math.round((correct / L1_ITEMS.length) * N1_MAX));
+  totalScore += pts; updateScore();
+  const fb = document.getElementById('l1-fb');
+  if (correct === L1_ITEMS.length) {
+    fb.className = 'fb mt16 ok show';
+    fb.innerHTML = `<strong>✓ ¡Perfecto! ${correct}/${L1_ITEMS.length} correctas.</strong> Conoces la función de cada sección del artículo científico. Esto te permite leer de forma estratégica y citar con precisión.`;
+    setTimeout(() => showModal('📖','¡Nivel 1 completado!','Ahora sabes navegar la anatomía de un artículo científico y leer estratégicamente.', pts, () => {
+      goToScreen('s-l2'); setProgress(40, 2); buildL2();
+    }), 700);
+  } else {
+    fb.className = 'fb mt16 fail show';
+    fb.innerHTML = `<strong>✗ ${correct}/${L1_ITEMS.length} correctas.</strong> Las zonas en rojo no coinciden. Vuelve al contenido educativo para revisar las funciones de cada sección.`;
+    setTimeout(() => showModal('🔍', `${correct} de ${L1_ITEMS.length} correctas`, 'Hay algunas secciones fuera de lugar. La práctica hace al maestro.', pts, () => {
+      goToScreen('s-l2'); setProgress(40, 2); buildL2();
+    }), 700);
+  }
+}
+function resetL1() { buildL1(); }
+
+/* ═══════════════════════════════════════
+   NIVEL 2 · QUIZ + CONSTRUCTOR + ERRORES
+═══════════════════════════════════════ */
+const L2_QUESTIONS = [
+  {
+    step: 'Paso 3 · Paráfrasis vs. cita textual',
+    q: 'Encontraste esta frase en Martín-Alonso et al. (2021, p. 8): "las disposiciones docentes emergen en la trama de la relación pedagógica". ¿Cuándo deberías usar esta cita textual en lugar de parafrasear?',
+    opts: [
+      { t:'Siempre que quieras citar un artículo, para asegurarte de no malinterpretar al autor.', ok:false },
+      { t:'Cuando las palabras exactas del autor son esenciales: una definición, un concepto o una declaración que no puede reformularse sin perder precisión.', ok:true },
+      { t:'Cuando el párrafo tiene más de tres oraciones y sería difícil resumirlo.', ok:false },
+      { t:'Cuando ya usaste una paráfrasis en el párrafo anterior del mismo autor.', ok:false },
+    ],
+    fb:'✓ Las citas textuales se reservan para cuando las palabras exactas del autor son insustituibles. En la mayoría de los casos, una paráfrasis demuestra mejor comprensión genuina y mantiene tu voz académica.',
+    wrong:'✗ APA privilegia la paráfrasis porque demuestra comprensión. La cita textual solo se usa cuando las palabras exactas del autor son esenciales para el argumento (definiciones, conceptos clave, declaraciones históricas).'
+  },
+  {
+    step: 'Pasos 4-5 · Cita narrativa',
+    q: 'Quieres escribir: "__________ señalan que las disposiciones docentes se configuran en el vínculo con los estudiantes." ¿Cuál es la forma correcta de completar la cita narrativa para Martín-Alonso, Blanco-García y Sierra-Nieto (2021)?',
+    opts: [
+      { t:'Martín-Alonso et al. (2021)', ok:true },
+      { t:'(Martín-Alonso et al., 2021)', ok:false },
+      { t:'Martín-Alonso, Blanco-García y Sierra-Nieto (2021)', ok:false },
+      { t:'Martín-Alonso et al., 2021', ok:false },
+    ],
+    fb:'✓ En cita narrativa con tres o más autores: "Apellido et al. (año)" — el nombre del autor es parte de la oración y el año va entre paréntesis. APA 7.ª ed. usa "et al." desde la primera cita cuando hay tres o más autores.',
+    wrong:'✗ En cita narrativa (el autor forma parte de la oración), el formato es: "Apellido et al. (año)". La forma parentética (autor, año) va al final de la oración, no al inicio como parte del sujeto gramatical.'
+  },
+  {
+    step: 'Pasos 4-5 · Cita parentética',
+    q: 'Escribiste: "Los lineamientos para evaluar innovaciones educativas proponen criterios tanto cualitativos como cuantitativos ________." ¿Cuál es la cita parentética correcta para Cifuentes y Caldas Quintero (2018)?',
+    opts: [
+      { t:'(Cifuentes & Caldas Quintero, 2018).', ok:true },
+      { t:'(Cifuentes y Caldas Quintero, 2018).', ok:false },
+      { t:'Cifuentes & Caldas Quintero (2018).', ok:false },
+      { t:'(Cifuentes, Caldas Quintero, 2018).', ok:false },
+    ],
+    fb:'✓ En citas parentéticas (dentro del paréntesis), APA usa "&" para separar autores, no "y". El formato es: (Apellido1 & Apellido2, año). La "y" se usa solo en citas narrativas cuando el nombre del autor es parte de la oración en español.',
+    wrong:'✗ Dentro del paréntesis, APA usa "&", no "y". El formato correcto es: (Cifuentes & Caldas Quintero, 2018). La "y" se usa solo en citas narrativas: "Cifuentes y Caldas Quintero (2018) proponen..."'
+  },
+  {
+    step: 'Paso 3 · Cita textual corta',
+    q: 'Quieres citar textualmente esta frase de Martín-Alonso et al. (2021, p. 12): "la docencia no se ejerce sobre los estudiantes sino con ellos". ¿Cómo la incluyes correctamente en tu texto?',
+    opts: [
+      { t:'Martín-Alonso et al. (2021) afirman que "la docencia no se ejerce sobre los estudiantes sino con ellos" (p. 12).', ok:true },
+      { t:'"La docencia no se ejerce sobre los estudiantes sino con ellos." (Martín-Alonso et al., 2021).', ok:false },
+      { t:'Martín-Alonso et al. (2021, p. 12) afirman que la docencia no se ejerce sobre los estudiantes sino con ellos.', ok:false },
+      { t:'"La docencia no se ejerce sobre los estudiantes sino con ellos" (Martín-Alonso et al., 2021, p. 12).', ok:false },
+    ],
+    fb:'✓ En cita textual narrativa: Autor (año) + verbo + "cita entre comillas" (p. X). El número de página va al final entre paréntesis, después de las comillas. Ambas formas (narrativa y parentética) son válidas; la opción correcta aquí integra la cita como parte de la oración.',
+    wrong:'✗ En citas textuales siempre debe aparecer el número de página o párrafo. La cita va entre comillas dobles. Si es narrativa: Autor (año) dice que "cita" (p. X). Si es parentética: "cita" (Autor, año, p. X).'
+  },
+];
+
+let l2QIdx = 0;
+let l2QAnswered = false;
+let l2QSecondChance = false; // true tras primer intento fallido
+const l2BuilderSels = {};
+
+function buildL2() {
+  l2QIdx = 0; l2QAnswered = false;
+  n2QuizCorrect = 0; n2BuildCorrect = 0; n2BuildTotal = 0; n2ErrorCorrect = 0; n2ErrorTotal = 0;
+  document.getElementById('l2-builder').style.display = 'none';
+  document.getElementById('l2-errors').style.display = 'none';
+  renderL2Q();
+}
+
+function renderL2Q() {
+  const q = L2_QUESTIONS[l2QIdx];
+  // dots
+  const dotsEl = document.getElementById('l2-dots');
+  dotsEl.innerHTML = '';
+  L2_QUESTIONS.forEach((_,i) => {
+    const d = document.createElement('div');
+    d.className = 'q-dot' + (i < l2QIdx ? ' done' : i === l2QIdx ? ' active' : '');
+    dotsEl.appendChild(d);
+  });
+  document.getElementById('l2-qstep').textContent = q.step;
+  document.getElementById('l2-qtext').textContent = q.q;
+  const opts = document.getElementById('l2-qopts');
+  opts.innerHTML = '';
+  [...q.opts].sort(()=>Math.random()-.5).forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'q-opt';
+    btn.textContent = opt.t;
+    btn.onclick = () => selectL2(btn, opt.ok, q.fb, q.wrong);
+    opts.appendChild(btn);
+  });
+  const fb = document.getElementById('l2-qfb');
+  fb.className = 'fb'; fb.textContent = '';
+  const nBtn = document.getElementById('btn-l2-next');
+  nBtn.disabled = true;
+  nBtn.textContent = l2QIdx < L2_QUESTIONS.length - 1 ? 'Siguiente pregunta →' : 'Ir a la parte B →';
+  l2QAnswered = false;
+  l2QSecondChance = false;
+}
+
+function selectL2(btnEl, ok, fbOk, fbFail) {
+  if (l2QAnswered) return;
+  const fb = document.getElementById('l2-qfb');
+
+  if (ok) {
+    // Respuesta correcta
+    l2QAnswered = true;
+    document.querySelectorAll('.q-opt').forEach(b => b.disabled = true);
+    btnEl.classList.add('correct');
+    if (!l2QSecondChance) n2QuizCorrect++; // punto solo en primer intento
+    fb.className = 'fb ok show';
+    fb.innerHTML = '<strong>✓ ¡Correcto!</strong> ' + fbOk.replace('✓ ','');
+    document.getElementById('btn-l2-next').disabled = false;
+  } else if (!l2QSecondChance) {
+    // Primer intento fallido → dar segunda oportunidad
+    l2QSecondChance = true;
+    btnEl.classList.add('incorrect');
+    btnEl.disabled = true;
+    fb.className = 'fb fail show';
+    fb.innerHTML = '<strong>No exactamente.</strong> Tienes un segundo intento. Elige otra opción.';
+  } else {
+    // Segundo intento fallido → mostrar respuesta y explicación
+    l2QAnswered = true;
+    document.querySelectorAll('.q-opt').forEach(b => b.disabled = true);
+    btnEl.classList.add('incorrect');
+    fb.className = 'fb fail show';
+    fb.innerHTML = '<strong>No era esa.</strong> ' + fbFail.replace('✗ ','');
+    document.getElementById('btn-l2-next').disabled = false;
+  }
+}
+
+function l2NextQ() {
+  l2QIdx++;
+  if (l2QIdx < L2_QUESTIONS.length) { renderL2Q(); }
+  else { buildL2Errors(); }  // primero errores, luego constructor
+}
+
+/* ── PARTE B: CONSTRUCTOR ── */
+const L2_BUILDER = [
+  {
+    id:'b1', type:'Capítulo de libro',
+    scenario:'Construye la referencia APA para el capítulo: Reimers, F., Azim, Z., Palomo, M. R. y Thony, C. (2026). Education and Artificial Intelligence: A Systems Approach. En: Artificial Intelligence and Education in the Global South. Springer, Cham.',
+    fields:[
+      { name:'autores', label:'Autores del capítulo',
+        correct:'Reimers, F., Azim, Z., Palomo, M. R., & Thony, C.',
+        options:['Reimers, F., Azim, Z., Palomo, M. R., & Thony, C.','Reimers et al. (2026)','F. Reimers, Z. Azim, M. R. Palomo y C. Thony','Reimers, Azim, Palomo y Thony (2026)'] },
+      { name:'año', label:'Año',
+        correct:'(2026).',
+        options:['(2026).','2026.','(2026)','[2026].'] },
+      { name:'titulo', label:'Título del capítulo (sin cursiva)',
+        correct:'Education and Artificial Intelligence: A Systems Approach.',
+        options:['Education and Artificial Intelligence: A Systems Approach.','<em>Education and Artificial Intelligence: A Systems Approach.</em>','"Education and Artificial Intelligence: A Systems Approach."','Education and artificial intelligence: a systems approach.'] },
+      { name:'fuente', label:'En + libro en cursiva + editorial + DOI',
+        correct:'En Artificial Intelligence and Education in the Global South. Springer. https://doi.org/10.1007/978-3-032-11449-5_1',
+        options:[
+          'En Artificial Intelligence and Education in the Global South. Springer. https://doi.org/10.1007/978-3-032-11449-5_1',
+          'Artificial Intelligence and Education in the Global South. Springer, Cham, 2026.',
+          'En: Artificial Intelligence and Education in the Global South (cap. 1). Springer.',
+          'Springer. Artificial Intelligence and Education in the Global South. DOI: 10.1007/978-3-032-11449-5_1'
+        ] },
+    ],
+    answer:'Reimers, F., Azim, Z., Palomo, M. R., &amp; Thony, C. (2026). Education and Artificial Intelligence: A Systems Approach. En <em>Artificial Intelligence and Education in the Global South.</em> Springer. https://doi.org/10.1007/978-3-032-11449-5_1'
+  },
+  {
+    id:'b2', type:'Informe de organismo',
+    scenario:'Construye la referencia APA para: Unesco (2025). AI and education: protecting the rights of learners. https://doi.org/10.54675/ROQH4287',
+    fields:[
+      { name:'autor', label:'Organismo como autor',
+        correct:'Unesco.',
+        options:['Unesco.','UNESCO (2025).','Organización de las Naciones Unidas para la Educación.','United Nations Educational, Scientific and Cultural Organization.'] },
+      { name:'año', label:'Año',
+        correct:'(2025).',
+        options:['(2025).','2025.','(2025)','[2025].'] },
+      { name:'titulo', label:'Título del informe (cursiva)',
+        correct:'AI and education: protecting the rights of learners.',
+        options:[
+          'AI and education: protecting the rights of learners.',
+          '"AI and education: protecting the rights of learners."',
+          'AI and Education: Protecting the Rights of Learners.',
+          'AI and education: protecting the rights of learners (Informe).'
+        ] },
+      { name:'doi', label:'DOI / URL',
+        correct:'https://doi.org/10.54675/ROQH4287',
+        options:['https://doi.org/10.54675/ROQH4287','DOI: 10.54675/ROQH4287','doi.org/10.54675/ROQH4287','https://www.unesco.org/informe-IA'] },
+    ],
+    answer:'Unesco. (2025). <em>AI and education: protecting the rights of learners.</em> https://doi.org/10.54675/ROQH4287'
+  },
+  {
+    id:'b3', type:'Video de YouTube',
+    scenario:'Construye la referencia APA para: Charlesworth, R. (2014, 25 septiembre). Schooling the World 2010 [Vídeo]. YouTube. https://www.youtube.com/watch?v=oDxYWspiN-8',
+    fields:[
+      { name:'autor', label:'Autor / creador',
+        correct:'Charlesworth, R.',
+        options:['Charlesworth, R.','R. Charlesworth (2014)','Charlesworth, R. [YouTube]','Charlesworth (Director).'] },
+      { name:'fecha', label:'Año y fecha de publicación',
+        correct:'(2014, 25 septiembre).',
+        options:['(2014, 25 septiembre).','(2014).','(septiembre 25, 2014).','(2014, septiembre).'] },
+      { name:'titulo', label:'Título + [Vídeo]',
+        correct:'Schooling the World 2010 [Vídeo].',
+        options:[
+          'Schooling the World 2010 [Vídeo].',
+          '<em>Schooling the World 2010</em> [Vídeo].',
+          '"Schooling the World 2010" [Vídeo].',
+          'Schooling the World 2010 (Video).'
+        ] },
+      { name:'fuente', label:'Plataforma + URL',
+        correct:'YouTube. https://www.youtube.com/watch?v=oDxYWspiN-8',
+        options:[
+          'YouTube. https://www.youtube.com/watch?v=oDxYWspiN-8',
+          'https://www.youtube.com/watch?v=oDxYWspiN-8',
+          'YouTube (2014). https://www.youtube.com/watch?v=oDxYWspiN-8',
+          'YouTube.com/watch?v=oDxYWspiN-8'
+        ] },
+    ],
+    answer:'Charlesworth, R. (2014, 25 septiembre). <em>Schooling the World 2010</em> [Vídeo]. YouTube. https://www.youtube.com/watch?v=oDxYWspiN-8'
+  },
+];
+
+function buildL2Builder() {
+  document.getElementById('l2-builder').style.display = 'block';
+  const cont = document.getElementById('l2-builder-content');
+  cont.innerHTML = '';
+
+  // Ejemplo resuelto de referencia de libro (Cifuentes) como modelo
+  const modelDiv = document.createElement('div');
+  modelDiv.style.cssText = 'margin-bottom:20px;';
+  modelDiv.innerHTML = `
+    <button onclick="toggleExample()" style="background:none;border:1px solid var(--border);border-radius:8px;padding:9px 14px;color:var(--muted);font-family:var(--font-b);font-size:0.83rem;cursor:pointer;width:100%;text-align:left;transition:border-color .15s;" onmouseover="this.style.borderColor='var(--teal)'" onmouseout="this.style.borderColor='var(--border)'">
+      📚 Ver ejemplo resuelto — Libro (Cifuentes &amp; Caldas Quintero, 2018)
+    </button>
+    <div id="example-box" style="display:none;background:var(--surface);border:1px solid var(--border);border-radius:0 0 8px 8px;padding:16px;margin-top:-1px;">
+      <p style="font-size:0.8rem;color:var(--muted);margin-bottom:10px;">Así se construye la referencia de un <strong style="color:var(--text);">libro</strong> en APA 7.ª ed.:</p>
+      <div style="display:flex;flex-direction:column;gap:7px;margin-bottom:12px;">
+        <div style="display:grid;grid-template-columns:110px 1fr;gap:8px;font-size:0.82rem;">
+          <span style="font-family:var(--font-m);font-size:0.7rem;color:var(--muted);text-transform:uppercase;">Autores</span>
+          <span style="color:var(--gold);">Cifuentes, G. y Caldas Quintero, A.</span>
+        </div>
+        <div style="display:grid;grid-template-columns:110px 1fr;gap:8px;font-size:0.82rem;">
+          <span style="font-family:var(--font-m);font-size:0.7rem;color:var(--muted);text-transform:uppercase;">Año</span>
+          <span style="color:var(--teal);">(2018).</span>
+        </div>
+        <div style="display:grid;grid-template-columns:110px 1fr;gap:8px;font-size:0.82rem;">
+          <span style="font-family:var(--font-m);font-size:0.7rem;color:var(--muted);text-transform:uppercase;">Título</span>
+          <span style="color:var(--text);font-style:italic;">Lineamientos para investigar y evaluar innovaciones educativas.</span>
+        </div>
+        <div style="display:grid;grid-template-columns:110px 1fr;gap:8px;font-size:0.82rem;">
+          <span style="font-family:var(--font-m);font-size:0.7rem;color:var(--muted);text-transform:uppercase;">Editorial</span>
+          <span style="color:var(--red);">Ediciones Uniandes.</span>
+        </div>
+      </div>
+      <div style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:10px 14px;font-family:var(--font-m);font-size:0.79rem;line-height:1.8;">
+        <span style="color:var(--gold);">Cifuentes, G. y Caldas Quintero, A.</span> <span style="color:var(--teal);">(2018).</span> <em style="color:var(--text);">Lineamientos para investigar y evaluar innovaciones educativas.</em> <span style="color:var(--red);">Ediciones Uniandes.</span>
+      </div>
+    </div>
+  `;
+  cont.appendChild(modelDiv);
+
+  L2_BUILDER.forEach(ex => {
+    l2BuilderSels[ex.id] = {};
+    const div = document.createElement('div');
+    div.className = 'ref-builder';
+    div.innerHTML = `
+      <div class="rb-scenario"><div class="rb-type">${ex.type}</div><p>${ex.scenario}</p></div>
+      <div class="rb-slots" id="rbs-${ex.id}"></div>
+      <div class="rb-preview"><div class="rp-label">Vista previa</div><div class="rp-text" id="rpv-${ex.id}"></div></div>
+    `;
+    cont.appendChild(div);
+    const slotsEl = div.querySelector(`#rbs-${ex.id}`);
+    ex.fields.forEach(f => {
+      const row = document.createElement('div');
+      row.className = 'rb-slot';
+      row.innerHTML = `
+        <span class="sn">${f.label}</span>
+        <select id="rsel-${ex.id}-${f.name}" onchange="l2SelChange('${ex.id}','${f.name}',this.value,'${f.correct.replace(/'/g,"\\'")}')">
+          <option value="">— elige —</option>
+          ${[...f.options].sort(()=>Math.random()-.5).map(o=>`<option value="${o}">${o}</option>`).join('')}
+        </select>
+        <span class="sok" id="rsok-${ex.id}-${f.name}"></span>
+      `;
+      slotsEl.appendChild(row);
+    });
+    updateL2Preview(ex.id);
+  });
+  document.getElementById('l2-builder-fb').className = 'fb mt16';
+  window.scrollTo(0, document.getElementById('l2-builder').offsetTop - 80);
+}
+
+function toggleExample() {
+  const box = document.getElementById('example-box');
+  box.style.display = box.style.display === 'none' ? 'block' : 'none';
+}
+
+function l2SelChange(exId, fname, val, correct) {
+  l2BuilderSels[exId][fname] = val;
+  const ok = document.getElementById(`rsok-${exId}-${fname}`);
+  if (!val) { ok.textContent=''; return; }
+  ok.textContent = val === correct ? '✓' : '✗';
+  ok.style.color = val === correct ? 'var(--teal)' : 'var(--red)';
+  updateL2Preview(exId);
+}
+
+function updateL2Preview(exId) {
+  const ex = L2_BUILDER.find(e => e.id === exId);
+  const el = document.getElementById(`rpv-${exId}`);
+  const sel = l2BuilderSels[exId] || {};
+  const parts = ex.fields.map(f => {
+    const v = sel[f.name];
+    if (!v) return `<span class="ph">[${f.label}]</span>`;
+    return `<span class="${v===f.correct?'ok':'err'}">${v}</span>`;
+  });
+  el.innerHTML = parts.join(' ').replace(/\s+\./g,'.').replace(/\.\s+\./g,'.');
+}
+
+function checkL2Builder() {
+  let correct = 0, total = 0;
+  L2_BUILDER.forEach(ex => {
+    ex.fields.forEach(f => {
+      total++;
+      if (l2BuilderSels[ex.id][f.name] === f.correct) correct++;
+    });
+  });
+  n2BuildCorrect = correct;
+  n2BuildTotal   = total;
+
+  // Calcular N2 total de una sola vez con techo fijo de 100
+  const quizPts  = Math.round((n2QuizCorrect  / L2_QUESTIONS.length) * 25);
+  const errorPts = n2ErrorTotal > 0 ? Math.round((n2ErrorCorrect / n2ErrorTotal) * 35) : 0;
+  const buildPts = n2BuildTotal > 0 ? Math.round((n2BuildCorrect / n2BuildTotal) * 40) : 0;
+  const n2Total  = Math.min(N2_MAX, quizPts + errorPts + buildPts);
+  totalScore += n2Total; updateScore();
+
+  const fb = document.getElementById('l2-builder-fb');
+  if (correct === total) {
+    fb.className = 'fb ok show';
+    fb.innerHTML = '<strong>✓ ¡Perfecto!</strong> Construiste correctamente todas las referencias.';
+    setTimeout(() => showModal('📝','¡Nivel 2 completado!','Dominaste las citas en texto, la detección de errores y la construcción de referencias para distintos tipos de fuentes.', n2Total, () => {
+      goToScreen('s-l3'); setProgress(70, 3); buildL3();
+    }), 800);
+  } else {
+    fb.className = 'fb fail show';
+    fb.innerHTML = `<strong>${correct}/${total} elementos correctos.</strong> Revisa los campos en rojo. Recuerda: autor, año, título y fuente tienen formatos específicos según el tipo de documento.`;
+    setTimeout(() => showModal('📝','Nivel 2 completado','Terminaste todas las actividades. Puedes volver a repasar cualquier nivel desde el menú.', n2Total, () => {
+      goToScreen('s-l3'); setProgress(70, 3); buildL3();
+    }), 800);
+  }
+}
+function resetL2Builder() { buildL2Builder(); }
+
+/* ── PARTE C: ERROR FINDER ── */
+const L2_ERRORS = [
+  {
+    id:'e1',
+    ref:'Martín-Alonso, D., Blanco-García, N. & Sierra-Nieto, J. E. (2021). "Estudio fenomenológico sobre las disposiciones docentes en la relación pedagógica". Magis, Revista Internacional De Investigación En Educación. https://doi.org/10.11144/Javeriana.m14.efdd',
+    errors:[
+      { id:'e1a', text:'Falta la coma antes de "&" (debería ser ", &")', correct:true },
+      { id:'e1b', text:'El título del artículo no debería ir entre comillas (sin cursiva, sin comillas)', correct:true },
+      { id:'e1c', text:'Falta el volumen y las páginas (14, 1–23)', correct:true },
+      { id:'e1d', text:'El DOI está mal: debería empezar con "doi:" en minúsculas', correct:false },
+    ],
+    explanation:'Los errores en esta referencia son: (1) falta la coma antes de "&"; (2) el título del artículo no lleva comillas (solo los títulos de libros van en cursiva, los artículos no llevan marca tipográfica especial); (3) faltan el volumen y las páginas.'
+  },
+  {
+    id:'e2',
+    ref:'Cifuentes, G. y Caldas Quintero, A. (2018). Lineamientos para investigar y evaluar innovaciones educativas. Universidad de los Andes.',
+    errors:[
+      { id:'e2a', text:'El título del libro debería estar en cursiva', correct:true },
+      { id:'e2b', text:'El nombre de la editorial es incorrecto: es "Ediciones Uniandes", no "Universidad de los Andes"', correct:true },
+      { id:'e2c', text:'Falta el número de edición entre paréntesis después del título', correct:false },
+      { id:'e2d', text:'El formato de los autores es incorrecto para un libro', correct:false },
+    ],
+    explanation:'Los errores son: (1) el título del libro debe ir en cursiva; (2) la editorial incorrecta ("Ediciones Uniandes", no "Universidad de los Andes"). No es necesario incluir número de edición si es la primera.'
+  },
+];
+
+const l2ErrorSels = {};
+
+function buildL2Errors() {
+  document.getElementById('l2-errors').style.display = 'block';
+  const cont = document.getElementById('l2-error-content');
+  cont.innerHTML = '';
+  L2_ERRORS.forEach(ex => {
+    l2ErrorSels[ex.id] = {};
+    const div = document.createElement('div');
+    div.className = 'card'; div.style.marginBottom = '20px';
+    div.innerHTML = `
+      <div style="font-family:var(--font-m);font-size:0.7rem;color:var(--muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px;">Referencia con errores</div>
+      <div class="ef-ref">${ex.ref}</div>
+      <p style="font-size:0.83rem;color:var(--muted);margin-bottom:10px;">Marca todos los errores que encuentres:</p>
+      <div class="ef-checks" id="efc-${ex.id}"></div>
+    `;
+    cont.appendChild(div);
+    const checksEl = div.querySelector(`#efc-${ex.id}`);
+    ex.errors.forEach(err => {
+      const row = document.createElement('div');
+      row.className = 'ef-check';
+      row.id = 'erow-' + err.id;
+      row.innerHTML = `<input type="checkbox" id="cb-${err.id}" onchange="l2ErrorSel('${ex.id}','${err.id}',this.checked)"><label for="cb-${err.id}">${err.text}</label>`;
+      checksEl.appendChild(row);
+    });
+  });
+  document.getElementById('l2-error-fb').className = 'fb mt16';
+  window.scrollTo(0, document.getElementById('l2-errors').offsetTop - 80);
+}
+
+function l2ErrorSel(exId, errId, checked) {
+  l2ErrorSels[exId] = l2ErrorSels[exId] || {};
+  l2ErrorSels[exId][errId] = checked;
+}
+
+function checkL2Errors() {
+  let correct = 0, total = 0;
+  L2_ERRORS.forEach(ex => {
+    ex.errors.forEach(err => {
+      total++;
+      const sel = l2ErrorSels[ex.id] && l2ErrorSels[ex.id][err.id];
+      const row = document.getElementById('erow-' + err.id);
+      row.classList.remove('correct-sel','wrong-sel');
+      if ((sel && err.correct) || (!sel && !err.correct)) {
+        correct++; if (sel) row.classList.add('correct-sel');
+      } else {
+        row.classList.add('wrong-sel');
+      }
+    });
+  });
+  n2ErrorCorrect = correct;
+  n2ErrorTotal   = total;
+
+  const allExp = L2_ERRORS.map(e => `<strong>${e.id==='e1'?'Referencia 1':'Referencia 2'}:</strong> ${e.explanation}`).join('<br><br>');
+  const fb = document.getElementById('l2-error-fb');
+  if (correct === total) {
+    fb.className = 'fb ok show';
+    fb.innerHTML = `<strong>✓ ¡Excelente! Encontraste todos los errores.</strong><br><br>${allExp}<br><br>Ahora construye tus propias referencias correctas en la Parte C.`;
+    setTimeout(buildL2Builder, 1000);
+  } else {
+    fb.className = 'fb fail show';
+    fb.innerHTML = `<strong>${correct}/${total} respuestas correctas.</strong> Los errores están marcados en rojo. Revisa la explicación:<br><br>${allExp}<br><br>Cuando estés lista/o, avanza a la Parte C para construir referencias correctas.`;
+    // Mostrar botón para continuar de todos modos
+    const continueBtn = document.createElement('button');
+    continueBtn.className = 'btn btn-teal btn-sm mt16';
+    continueBtn.style.marginTop = '14px';
+    continueBtn.textContent = 'Continuar a la Parte C →';
+    continueBtn.onclick = buildL2Builder;
+    fb.appendChild(continueBtn);
+  }
+}
+
+/* ═══════════════════════════════════════
+   NIVEL 3 · IA GENERATIVA
+═══════════════════════════════════════ */
+const L3_EX = [
+  {
+    id:'ia1', title:'Chat específico de Claude',
+    scenario:'Usaste Claude Sonnet 4 el 20 de mayo de 2025 para generar una lista de conceptos. El chat tiene URL compartible y quieres que el lector pueda acceder. Construye la referencia.',
+    fields:[
+      { name:'autor', label:'Autor (empresa)', correct:'Anthropic.',
+        options:['Anthropic.','OpenAI.','Google.','Anthropic Inc.'] },
+      { name:'fecha', label:'Fecha del chat', correct:'(2025, 20 de mayo).',
+        options:['(2025, 20 de mayo).','(2025).','(mayo 2025).','(20/05/2025).'] },
+      { name:'titulo', label:'Título [descripción]', correct:'Conceptos de innovación educativa [chat de IA generativa].',
+        options:['Conceptos de innovación educativa [chat de IA generativa].','Conceptos de innovación educativa (Claude, 2025).','[Chat de IA generativa]. Conceptos educativos.','Conceptos de innovación educativa.'] },
+      { name:'fuente', label:'Modelo + URL', correct:'Claude Sonnet 4. https://claude.ai/share/xxxxx',
+        options:['Claude Sonnet 4. https://claude.ai/share/xxxxx','https://claude.ai/new','Anthropic/Claude. https://anthropic.com','Claude AI (modelo de lenguaje).'] },
+    ],
+    answer:'Anthropic. (2025, 20 de mayo). <em>Conceptos de innovación educativa</em> [chat de IA generativa]. Claude Sonnet 4. https://claude.ai/share/xxxxx'
+  },
+  {
+    id:'ia2', title:'Herramienta de IA en general (ChatGPT)',
+    scenario:'Usaste ChatGPT para editar la redacción de tu marco teórico. No necesitas citar un chat específico, sino reconocer el uso de la herramienta. Construye la referencia general.',
+    fields:[
+      { name:'autor', label:'Autor (empresa)', correct:'OpenAI.',
+        options:['OpenAI.','Anthropic.','Microsoft.','ChatGPT Corporation.'] },
+      { name:'año', label:'Año de última actualización', correct:'(2025).',
+        options:['(2025).','(2023).','(s.f.).','(2025, enero).'] },
+      { name:'titulo', label:'Nombre/modelo [descripción]', correct:'ChatGPT [Modelo de lenguaje grande].',
+        options:['ChatGPT [Modelo de lenguaje grande].','ChatGPT-5 (versión 2025).','ChatGPT [software de IA].','GPT [chat de IA generativa].'] },
+      { name:'url', label:'URL de acceso', correct:'https://chatgpt.com/',
+        options:['https://chatgpt.com/','https://chatgpt.com/share/abc123','https://openai.com/research','openai.com/chatgpt'] },
+    ],
+    answer:'OpenAI. (2025). <em>ChatGPT</em> [Modelo de lenguaje grande]. https://chatgpt.com/'
+  },
+  {
+    id:'ia3', title:'Herramienta de IA: Gemini',
+    scenario:'Usaste Gemini 2.5 Flash de Google el 22 de mayo de 2025 para generar un resumen de la literatura. El chat tiene URL compartible.',
+    fields:[
+      { name:'autor', label:'Autor (empresa)', correct:'Google.',
+        options:['Google.','Alphabet.','DeepMind.','Google AI.'] },
+      { name:'fecha', label:'Fecha del chat', correct:'(2025, 22 de mayo).',
+        options:['(2025, 22 de mayo).','(2025).','(mayo 22, 2025).','(22-05-2025).'] },
+      { name:'titulo', label:'Título [descripción]', correct:'Resumen de literatura sobre innovación educativa [chat de IA generativa].',
+        options:['Resumen de literatura sobre innovación educativa [chat de IA generativa].','[Chat de IA]. Resumen educativo (2025).','Resumen de literatura sobre innovación educativa.','Gemini: resumen de literatura educativa.'] },
+      { name:'fuente', label:'Modelo + URL', correct:'Gemini 2.5 Flash. https://g.co/gemini/share/xxxxx',
+        options:['Gemini 2.5 Flash. https://g.co/gemini/share/xxxxx','https://gemini.google.com','Google Gemini. https://google.com','Gemini (2025). https://gemini.google.com'] },
+    ],
+    answer:'Google. (2025, 22 de mayo). <em>Resumen de literatura sobre innovación educativa</em> [chat de IA generativa]. Gemini 2.5 Flash. https://g.co/gemini/share/xxxxx'
+  },
+];
+
+const l3Sels = {};
+
+function buildL3() {
+  const cont = document.getElementById('l3-content');
+  cont.innerHTML = '';
+  L3_EX.forEach((ex, ei) => {
+    l3Sels[ex.id] = {};
+    const div = document.createElement('div');
+    div.className = 'ref-builder';
+    div.innerHTML = `
+      <div class="rb-scenario">
+        <div class="rb-type">Ejercicio ${ei+1} · ${ex.title}</div>
+        <p>${ex.scenario}</p>
+      </div>
+      <div class="rb-slots" id="l3rbs-${ex.id}"></div>
+      <div class="rb-preview"><div class="rp-label">Vista previa de la referencia</div><div class="rp-text" id="l3rpv-${ex.id}"></div></div>
+    `;
+    cont.appendChild(div);
+    const slotsEl = div.querySelector(`#l3rbs-${ex.id}`);
+    ex.fields.forEach(f => {
+      const row = document.createElement('div');
+      row.className = 'rb-slot';
+      row.innerHTML = `
+        <span class="sn">${f.label}</span>
+        <select id="l3sel-${ex.id}-${f.name}" onchange="l3SelChange('${ex.id}','${f.name}',this.value,'${f.correct.replace(/'/g,"\\'")}')">
+          <option value="">— elige —</option>
+          ${[...f.options].sort(()=>Math.random()-.5).map(o=>`<option value="${o}">${o}</option>`).join('')}
+        </select>
+        <span class="sok" id="l3sok-${ex.id}-${f.name}"></span>
+      `;
+      slotsEl.appendChild(row);
+    });
+    updateL3Preview(ex.id);
+  });
+  document.getElementById('l3-fb').className = 'fb mt16';
+}
+
+function l3SelChange(exId, fname, val, correct) {
+  l3Sels[exId][fname] = val;
+  const ok = document.getElementById(`l3sok-${exId}-${fname}`);
+  if (!val) { ok.textContent=''; return; }
+  ok.textContent = val === correct ? '✓' : '✗';
+  ok.style.color = val === correct ? 'var(--teal)' : 'var(--red)';
+  updateL3Preview(exId);
+}
+
+function updateL3Preview(exId) {
+  const ex = L3_EX.find(e => e.id === exId);
+  const el = document.getElementById(`l3rpv-${exId}`);
+  const sel = l3Sels[exId] || {};
+  const parts = ex.fields.map(f => {
+    const v = sel[f.name];
+    if (!v) return `<span class="ph">[${f.label}]</span>`;
+    return `<span class="${v===f.correct?'ok':'err'}">${v}</span>`;
+  });
+  el.innerHTML = parts.join(' ');
+}
+
+function checkL3() {
+  let correct = 0, total = 0;
+  L3_EX.forEach(ex => {
+    ex.fields.forEach(f => {
+      total++;
+      if (l3Sels[ex.id][f.name] === f.correct) correct++;
+    });
+  });
+  const pts = Math.min(N3_MAX, Math.round((correct / total) * N3_MAX));
+  totalScore += pts; updateScore();
+  const fb = document.getElementById('l3-fb');
+  if (correct === total) {
+    fb.className = 'fb ok show';
+    fb.innerHTML = '<strong>✓ ¡Perfecto!</strong> Construiste correctamente las tres referencias de IA generativa según APA (2025).';
+    setTimeout(() => showModal('🤖','¡Nivel 3 completado!','Dominaste el formato APA para citar IA generativa, una habilidad esencial para la escritura académica actual.', pts, showFinale), 700);
+  } else {
+    fb.className = 'fb fail show';
+    fb.innerHTML = `<strong>${correct}/${total} elementos correctos.</strong> Revisa los campos en rojo. Recuerda: empresa como autor, fecha exacta del chat, título en cursiva con [descripción], y modelo + URL como fuente.`;
+    setTimeout(() => showModal('🤖',`${correct}/${total} elementos correctos`,'Algunos campos necesitan revisión. Puedes volver al contenido educativo para repasar la estructura.', pts, showFinale), 700);
+  }
+}
+function resetL3() { buildL3(); }
+
+/* ═══════════════════════════════════════
+   FINAL
+═══════════════════════════════════════ */
+function showFinale() {
+  setProgress(100, 4);
+  goToScreen('s-finale');
+  document.getElementById('f-score').textContent = totalScore;
+  const cat = totalScore >= 240 ? 'high' : totalScore >= 150 ? 'mid' : 'low';
+  const titles = { high:'¡Experta/o en APA!', mid:'Buen dominio APA', low:'Sigue practicando' };
+  document.getElementById('f-title').textContent = titles[cat];
+
+  // Diagnóstico específico por componente
+  const quizPct  = Math.round((n2QuizCorrect  / L2_QUESTIONS.length) * 100);
+  const errorPct = n2ErrorTotal  > 0 ? Math.round((n2ErrorCorrect  / n2ErrorTotal)  * 100) : 0;
+  const buildPct = n2BuildTotal  > 0 ? Math.round((n2BuildCorrect  / n2BuildTotal)  * 100) : 0;
+
+  const weakSpots = [];
+  if (quizPct  < 75) weakSpots.push('citas narrativas y parentéticas (N2 · Página 4)');
+  if (errorPct < 75) weakSpots.push('detección de errores en referencias (N2 · Parte B)');
+  if (buildPct < 75) weakSpots.push('construcción de referencias por tipo de fuente (N2 · Parte C)');
+
+  let desc = '';
+  if (cat === 'high') {
+    desc = 'Demostraste dominio sólido de las normas APA 7.ª ed.: lectura estratégica, proceso de citación, construcción de referencias y citas de IA generativa.';
+  } else if (weakSpots.length > 0) {
+    desc = `Tienes una buena base en APA. Te recomendamos repasar: ${weakSpots.join('; ')}. Usa el menú ☰ para volver a esas secciones.`;
+  } else {
+    desc = 'Las normas APA requieren práctica constante. Usa el menú ☰ para volver a cualquier nivel y repasar el contenido educativo antes de las actividades.';
+  }
+  document.getElementById('f-desc').textContent = desc;
+
+  const list = document.getElementById('f-list');
+  list.innerHTML = '';
+  [
+    'Lectura estratégica: empieza por el abstract, luego discusión, luego lo que necesites.',
+    'Paráfrasis: reformula la idea con tus propias palabras (preferida por APA).',
+    'Cita narrativa: Autor (año) señalan que... · Cita parentética: idea (Autor, año).',
+    'Tres o más autores: usa "et al." desde la primera cita.',
+    'Referencia de artículo: Autor. (año). Título sin cursiva. Revista en cursiva, vol., págs. DOI.',
+    'Capítulo: Autor. (año). Título capítulo. En Título libro en cursiva. Editorial. DOI.',
+    'Informe: Organismo. (año). Título en cursiva. URL o DOI.',
+    'Video YouTube: Autor. (año, día mes). Título en cursiva [Vídeo]. YouTube. URL.',
+    'IA (chat): Empresa. (año, día mes). Título [chat de IA generativa]. Modelo. URL.',
+    'IA (general): Empresa. (año). Modelo [Modelo de lenguaje grande]. URL.',
+    'Regla de oro: todo lo citado debe estar en referencias y viceversa.',
+  ].forEach(item => {
+    const li = document.createElement('li');
+    li.textContent = item;
+    list.appendChild(li);
+  });
+}
+
+function restartGame() {
+  totalScore = 0; currentLevel = 0;
+  updateScore();
+  setProgress(0, 0);
+  goToScreen('s-intro');
+}
+
+/* INIT */
+updateScore();
+unlockNav('intro');
+// inicializar drag & drop L1 cuando se construya
+document.getElementById('s-intro').querySelector('.btn-gold').addEventListener('click', () => {
+  setTimeout(buildL1, 100);
+});
+</script>
+</body>
+</html>
